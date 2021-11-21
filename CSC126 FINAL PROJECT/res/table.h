@@ -16,6 +16,9 @@ private:
 	// Table Creation stuff
 	std::string tableName{}, temp{};
 
+	// Directory Stuff
+	std::filesystem::path ps;
+
 private:
 	void loadTableToMemory();
 	void loadTableToFile();
@@ -26,6 +29,8 @@ public:
 	void printTable();
 
 	void createTable();
+
+	void readAllTable();
 	
 	~table();
 };

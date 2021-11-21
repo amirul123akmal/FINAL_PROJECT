@@ -3,6 +3,8 @@
 #include <vector>
 #include <fstream>
 #include <sstream>
+#include <filesystem>
+#include <algorithm>
 #include <Windows.h>
 
 #define CONSOLE(x) std::cout << x << std::endl

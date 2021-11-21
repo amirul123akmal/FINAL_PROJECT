@@ -24,6 +24,7 @@ namespace run
 			data.createTable();
 			break;
 		case 4:
+			data.readAllTable();
 			break;
 		case 5:
 			return 0;

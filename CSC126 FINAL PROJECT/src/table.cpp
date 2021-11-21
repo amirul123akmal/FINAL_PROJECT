@@ -146,6 +146,17 @@ void table::createTable()
 
 }
 
+void table::readAllTable()
+{
+	for (const std::filesystem::directory_entry& i : std::filesystem::directory_iterator("data/"))
+	{
+		temp = i.path().string();
+		temp.erase(temp.end() - 4, temp.end());
+		temp.erase(temp.begin(), temp.begin()+5);
+		std::cout << temp << "\n";
+	}
+}
+
  // Deconstructor
 table::~table()
 {
