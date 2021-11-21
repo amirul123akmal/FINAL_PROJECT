@@ -17,7 +17,11 @@
 mono_crash.*
 
 # Build results
+<<<<<<< HEAD
 Build-Essential/
+=======
+Build Essential/
+>>>>>>> master
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
