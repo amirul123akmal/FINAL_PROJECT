@@ -18,6 +18,7 @@ private:
 
 private:
 	void loadTableToMemory();
+	void loadTableToFile();
 
 public:
 	table(const char path[]);

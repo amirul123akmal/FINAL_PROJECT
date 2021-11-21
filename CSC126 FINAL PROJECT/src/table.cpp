@@ -28,6 +28,18 @@ void table::loadTableToMemory()
 	#endif // _DEBUG
 }
 
+void table::loadTableToFile()
+{
+	std::ofstream file("data/"+tableName + ".txt", std::ios::out);
+	for (const std::vector<std::string>& element : createTableData)
+	{
+		file << element[0] << "\n" << element[1] << "\n";
+		for (int i = 2 ; i < element.size()-1 ; i = i + 2)
+			file << element[i] << ";" << element[i+1] << "\n";
+	}
+	file.close();
+}
+
 // ========== PUBLIC ==========
 
 // Constructor
@@ -40,13 +52,13 @@ table::table(const char path[])
 void table::printTable()
 {
 	basic::clear();
-	int maxBorder = 0;
+	uint64_t maxBorder = 0;
 	bool toggle = false;
 	// Get Max length for border
 	for (int i = 0; i < tableData.size(); i++)
 		for (int j = 0; j < tableData[i].size() - 2; j++)
-			if (21 + tableData[i][static_cast<uint64_t>(j) + 1].length() > maxBorder)
-				maxBorder = 15 + tableData[i][ static_cast<uint64_t>(j) + 1].length();
+			if (21 + tableData[i][j + 1].length() > maxBorder)
+				maxBorder = 15 + tableData[i][j + 1].length();
 	for (int i = 0; i < maxBorder; i++)
 		CONSOLE1("=");
 	for (int i = 0; i < tableData.size(); i++)
@@ -75,7 +87,7 @@ void table::printTable()
 			if (j % 2 == 0)
 			{
 				GetConsoleScreenBufferInfo(h, &csbi);
-				pos.X = maxBorder-1;
+				pos.X = static_cast<int>(maxBorder)-1;
 				pos.Y = csbi.dwCursorPosition.Y;
 				SetConsoleCursorPosition(h, pos);
 				CONSOLE("|");
@@ -99,30 +111,38 @@ void table::createTable()
 	basic::print_color("Insert abc123 at time to stop the table creation\n", true, 0, 34);
 
 	basic::print_color("Enter the name of the table: ", false, 0, 31);
+	std::cin.ignore();
 	std::getline(std::cin, tableName);
 
 	for (int i = 0; i < day.size(); i++)
 	{
-		count = 1;
+		createRow.clear();
+		count = 0;
 		basic::print_color("\n" + day[i], true, 0, 32);
+		createRow.push_back(day[i]);
+		createRow.push_back(std::to_string(count));
 		for (;;count++)
 		{
-			createRow.clear();
 			basic::print_color("Enter Time: ", false, 0, 33);
 			std::getline(std::cin, temp);
 			if (temp == "aaa123" || temp == "abc123")
+			{
+				createRow[1] = std::to_string(count);
+				createTableData.push_back(createRow);
 				break;
-			createRow.push_back(day[i]);
+			}
 			createRow.push_back(temp);
 			basic::print_color("Enter Subject Code: ", false, 0, 33);
 			std::getline(std::cin, temp);
 			createRow.push_back(temp);
-			createTableData.push_back(createRow);
 		}
 		if (temp == "abc123")
 			break;
 	}
-
+	loadTableToFile();
+#if _DEBUG
+	basic::print_2D_vector(createTableData);
+#endif
 
 }
 
