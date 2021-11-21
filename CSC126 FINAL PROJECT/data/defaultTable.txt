@@ -1,0 +1,24 @@
+isnin
+3
+8:00 am - 9:50 am;CSC116
+2:30 pm - 5:20 pm;CSC126
+8:30 pm - 9:50 pm;UED102
+selasa
+3
+8:00 am - 9:50 am;CSC126
+11:00 am - 12:50 pm;CSC253
+2:30 pm - 5:20 pm;CSC116
+rabu
+2
+11:00 am - 12:50 pm;MAT133
+2:30 pm - 3:20 pm;CTU101
+khamis
+4
+8:00 am - 8:50 am;CTU101
+9:00 am - 10:50 am;ELC121
+11:00 am - 12:05 pm;CSC253
+5:30 pm - 7:20 pm;HBU115
+jumaat
+2
+8:00 am - 9:50 am;MAT133
+10:00 am - 11:50 am;ELC121
