@@ -17,5 +17,12 @@
     - Visual Studio 2019
 - Dependencies:
     - Local ( None )
-- Step :
-    1. Launch the launcher
+- Prebuilt Binaries:
+    1. De-compressed the `Final.zip`
+    2. Run the Executable 
+- Build It :
+    1. Launch the Solution
+    2. Make sure you're on `Release` mode at the top left corner
+    3. Press `ctrl + b` to build the solution
+    4. Navigate yourself to `x64/Release` from the `Solution` Directory
+    5. Run the executable
