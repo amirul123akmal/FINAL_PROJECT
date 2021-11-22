@@ -1,3 +1,14 @@
+// External Lib Header
+#include <boost/asio/thread_pool.hpp>
+#include <boost/asio/post.hpp>
+#include <imgui/imgui.h>
+
+// GUI Stuff
+#include <tchar.h>
+#include "GLFW/glfw3.h"
+#include "imgui/imgui_impl_glfw.h"
+#include "imgui/imgui_impl_opengl3.h"
+
 // STL
 #include <iostream>
 #include <string>
@@ -6,22 +17,18 @@
 #include <sstream>
 #include <filesystem>
 #include <algorithm>
-#include <Windows.h>
 #include <mutex>
+#include <cstdio>
+#include <Windows.h>
 
-// External Lib Header
-#include <boost/asio/thread_pool.hpp>
-#include <boost/asio/post.hpp>
-#include <imgui/imgui.h>
 
+// Easy Usage
+// Mostly for debug
 #define CONSOLE(x) std::cout << x << std::endl
 #define CONSOLE1(x) std::cout << x
 
 namespace basic
 {
-
-	inline void printtttttt();
-
 	/// <summary>
 	/// Clear the screen totally
 	/// </summary>
@@ -42,7 +49,6 @@ namespace basic
 	/// https://ss64.com/nt/syntax-ansi.html
 	void print_color(const std::string& text, bool nextline, int mode, int color);
 
-	void printtttttt();
 #if _DEBUG
 	/// <summary>
 	/// Debugging purposes only

@@ -1,10 +1,5 @@
 #include "Basics.h"
 
-void basic::printtttttt()
-{
-	std::cout << "test";
-}
-
 void basic::clear()
 {
 	system("cls");

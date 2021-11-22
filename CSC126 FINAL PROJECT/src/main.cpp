@@ -1,36 +1,17 @@
 #include "Header.h"
 #include "Basics.h"
 #include "table.h"
+#include "Renderer.h"
 
 namespace run
 {
 	// Main function
 	int run()
 	{
-		table data("data/defaultTable.txt");
-		int user;
-	restart:
-		menu();
-		std::cin >> user;
-		switch (user)
-		{
-		case 1:
-			mainmenu();
-			break;
-		case 2:
-			data.printTable();
-			break;
-		case 3:
-			data.createTable();
-			break;
-		case 4:
-			data.readAllTable();
-			break;
-		case 5:
-			return 0;
-		}
-		basic::pause();
-		goto restart;
+		render desktop;
+		desktop.initall();
+		desktop.runMainProcess();
+		return 0;
 	}
 
 	// Another Function Section
@@ -64,6 +45,6 @@ namespace run
 running::~running()
 {
 	basic::clear();
-	basic::print_color("Thank you for using our Student Management CLI V2.0", true, 0, 31);
+	basic::print_color("Thank you for using our Student Management CLI V3.0", true, 0, 31);
 	basic::pause();
 }
