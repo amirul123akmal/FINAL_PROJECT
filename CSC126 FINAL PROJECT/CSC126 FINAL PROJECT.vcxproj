@@ -59,7 +59,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)CSC126 FINAL PROJECT\res</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)CSC126 FINAL PROJECT\res;$(SolutionDir)lib/</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <WholeProgramOptimization>false</WholeProgramOptimization>
@@ -79,7 +79,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)CSC126 FINAL PROJECT\res</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)CSC126 FINAL PROJECT\res;$(SolutionDir)lib/</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>

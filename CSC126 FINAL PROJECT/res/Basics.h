@@ -1,3 +1,4 @@
+// STL
 #include <iostream>
 #include <string>
 #include <vector>
@@ -6,12 +7,21 @@
 #include <filesystem>
 #include <algorithm>
 #include <Windows.h>
+#include <mutex>
+
+// External Lib Header
+#include <boost/asio/thread_pool.hpp>
+#include <boost/asio/post.hpp>
+#include <imgui/imgui.h>
 
 #define CONSOLE(x) std::cout << x << std::endl
 #define CONSOLE1(x) std::cout << x
 
 namespace basic
 {
+
+	inline void printtttttt();
+
 	/// <summary>
 	/// Clear the screen totally
 	/// </summary>
@@ -32,6 +42,7 @@ namespace basic
 	/// https://ss64.com/nt/syntax-ansi.html
 	void print_color(const std::string& text, bool nextline, int mode, int color);
 
+	void printtttttt();
 #if _DEBUG
 	/// <summary>
 	/// Debugging purposes only
