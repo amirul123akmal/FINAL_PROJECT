@@ -31,3 +31,11 @@ public:
 	
 	~table();
 };
+
+class json_table
+{
+public:
+	
+private:
+	nlohmann::json j;
+};

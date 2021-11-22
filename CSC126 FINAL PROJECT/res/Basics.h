@@ -1,9 +1,12 @@
+#pragma once
+
 // External Lib Header
 #include <boost/asio/thread_pool.hpp>
 #include <boost/asio/post.hpp>
-#include <imgui/imgui.h>
+#include <nlohmann/json.hpp>
 
 // GUI Stuff
+#include <imgui/imgui.h>
 #include <tchar.h>
 #include "GLFW/glfw3.h"
 #include "imgui/imgui_impl_glfw.h"
