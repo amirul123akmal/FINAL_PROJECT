@@ -1,8 +1,5 @@
 #include "Basics.h"
 
-/*
-
-*/
 void basic::clear()
 {
 	system("cls");
