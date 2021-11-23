@@ -16,8 +16,6 @@ CSC126 FINAL PROJECT\data\*
 !CSC126 FINAL PROJECT\data\default.json
 
 imgui.ini
-CSC126 FINAL PROJECT\imgui.ini
-
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
@@ -26,11 +24,7 @@ CSC126 FINAL PROJECT\imgui.ini
 mono_crash.*
 
 # Build results
-<<<<<<< HEAD
 Build-Essential/
-=======
-Build Essential/
->>>>>>> master
 [Dd]ebug/
 [Dd]ebugPublic/
 [Rr]elease/
