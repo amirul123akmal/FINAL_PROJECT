@@ -71,6 +71,7 @@ void render::table(bool* open)
 		{
 			if ((bool)API[h].isdefault)
 			{
+				ImGui::Text(API[h].name.c_str());
 				if (ImGui::BeginTable("Jadual", API[h].time_stamp_limit, ImGuiTableFlags_Borders))
 				{
 					ImGui::TableNextRow();
