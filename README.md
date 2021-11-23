@@ -1,5 +1,12 @@
 # FINAL_PROJECT
 ## **This is a mini-project for UiTM Computer Science**
+## ABOUT
+This is an application project that uses GuI for interactive
+- Library uses in this project:
+    1. ImGui
+    2. Boost
+    3. Nlohmann Json
+    4. GLFW ( OpenGL )
 
 ## INFORMATION ON THIS PROJECT
 - Members:
@@ -11,15 +18,17 @@
     - Visual Studio 2019
 - Language:
     - C++17
+    - C17
     
 ## HOW TO RUN
 - Requirement:
     - Visual Studio 2019
 - Dependencies:
-    - Local ( None )
+    - Local ( Nothing to worry )
 - Prebuilt Binaries:
-    1. De-compressed the `Final.zip`
-    2. Run the Executable 
+    1. Download zipped folder at Release 
+    ( To make sure you have the most stable Release)
+    2. Run the Executable
 - Build It :
     1. Launch the Solution
     2. Make sure you're on `Release` mode at the top left corner

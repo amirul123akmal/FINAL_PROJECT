@@ -30,6 +30,18 @@
 #define CONSOLE(x) std::cout << x << std::endl
 #define CONSOLE1(x) std::cout << x
 
+/// <summary>
+/// Data Movement from JSON API to ImGui 
+/// Collect all table and is_default option in the gui
+/// </summary>
+struct table_transfer
+{
+	bool isdefault = false;
+	int time_stamp_limit = 0;
+	std::string name{};
+	std::vector<std::vector<std::string>> data;
+};
+
 namespace basic
 {
 	/// <summary>

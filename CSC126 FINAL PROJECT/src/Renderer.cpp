@@ -53,51 +53,55 @@ void render::homepage(bool* enable)
 
 void render::table(bool* open)
 {
-	int count = 8;
 	if (ImGui::Begin("Table", open))
 	{
 		if (ImGui::CollapsingHeader("Table List"))
 		{
 			if (ImGui::BeginTable("Table", 3))
 			{
-
-				ImGui::TableNextColumn(); ImGui::Button("Table Name will be at here");
-				ImGui::TableNextColumn(); ImGui::Button("Table Name will be at here");
-				ImGui::TableNextColumn(); ImGui::Button("Table Name will be at here");
-				ImGui::TableNextColumn(); ImGui::Button("Table Name will be at here");
-				ImGui::TableNextColumn(); ImGui::Button("Table Name will be at here");
-				ImGui::TableNextColumn(); ImGui::Button("Table Name will be at here");
-				ImGui::TableNextColumn(); ImGui::Button("Table Name will be at here");
-			}
-			ImGui::EndTable();
-		}
-		if (ImGui::BeginTable("Jadual", time_stamp_limit, ImGuiTableFlags_Borders))
-		{
-			ImGui::TableNextRow();
-			ImGui::TableSetColumnIndex(0);
-			ImGui::Text("Hari");
-			
-			for (int column = 1; column < time_stamp_limit; column++)
-			{
-				ImGui::TableSetColumnIndex(column);
-				ImGui::Text("%d:00",count);
-				ImGui::TableSetColumnIndex(++column);
-				ImGui::Text("%d:30", count++);
-			}
-			ImGui::TableNextRow();
-			for (int index = 0; index < table_data.size(); index++)
-			{
-				ImGui::TableSetColumnIndex(0);
-				ImGui::Text("%s", day[index].c_str());
-				for (int j = 0; j < table_data[index].size() - 1; j++)
+				for (int i = 0; i < available_table.size(); i++)
 				{
-					ImGui::TableSetColumnIndex(j + 1);
-					ImGui::Text("%s", table_data[index][j].c_str());
+					ImGui::TableNextColumn();
+					ImGui::Checkbox(API[i].name.c_str(), &API[i].isdefault);
 				}
-				ImGui::TableNextRow();
 			}
 			ImGui::EndTable();
 		}
+		for (int h = 0; h < API.size(); h++)
+		{
+			if ((bool)API[h].isdefault)
+			{
+				if (ImGui::BeginTable("Jadual", API[h].time_stamp_limit, ImGuiTableFlags_Borders))
+				{
+					ImGui::TableNextRow();
+					ImGui::TableSetColumnIndex(0);
+					ImGui::Text("Hari");
+					int count = 8;
+					for (int column = 1; column < API[h].time_stamp_limit ; column++)
+					{
+						ImGui::TableSetColumnIndex(column);
+						ImGui::Text("%d:00", count);
+						ImGui::TableSetColumnIndex(++column);
+						ImGui::Text("%d:30", count++);
+					}
+					ImGui::TableNextRow();
+					for (int index = 0; index < API[h].data.size(); index++)
+					{
+						ImGui::TableSetColumnIndex(0);
+						ImGui::Text("%s", day[index].c_str());
+						for (int j = 0; j < API[h].data[index].size() - 1; j++)
+						{
+							ImGui::TableSetColumnIndex(j + 1);
+							ImGui::Text("%s", API[h].data[index][j].c_str());
+						}
+						ImGui::TableNextRow();
+					}
+					ImGui::EndTable();
+				}
+
+			}
+		}
+		ImGui::End();
 	}
 }
 

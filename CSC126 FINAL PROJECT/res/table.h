@@ -37,17 +37,23 @@ class json_table
 public:
 	json_table();
 	~json_table();
-	void loadtable(std::string a);
-	void update();
+	void loadtable();
+	void availtable();
 
 private:
 	nlohmann::json j;
 	std::vector<std::string> json_data{};
-	std::vector<std::string> available_table{};
+	std::string temp;
 protected:
-	int time_stamp_limit = 0;
+	/// <summary>
+	/// Days in a week
+	/// </summary>
 	const std::vector<std::string> day{
 	"Isnin", "Selasa", "Rabu", "Khamis", "Jumaat", "Sabtu", "Ahad"
 	};
-	std::vector<std::vector<std::string>> table_data{};
+	/// <summary>
+	/// available_table index is the same as the API
+	/// </summary>
+	std::vector<std::string> available_table{};
+	std::vector<table_transfer> API{};
 };

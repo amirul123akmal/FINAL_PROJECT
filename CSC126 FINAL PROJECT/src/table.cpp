@@ -163,34 +163,57 @@ table::~table()
 	// Just to be ready if want to put anything
 }
 
-json_table::json_table()
-{
-	update();
-	loadtable("default.json");
-}
 
-json_table::~json_table()
+void json_table::loadtable()
 {
-}
-
-void json_table::loadtable(std::string a)
-{
-	json_data.clear();
-	table_data.clear();
-	std::ifstream table("data/"+a, std::ios::in);
-	j = nlohmann::json::parse(table);
-	std::string alpha;
-	for (int i = 0; i < 7; i++)
+	for (int k = 0; k < available_table.size(); k++)
 	{
+		table_transfer collect;
 		json_data.clear();
-		nlohmann::json js(j[day[i].c_str()]);
-		time_stamp_limit = js.size();
-		for (int j = 1; j <= time_stamp_limit; j++)
-			json_data.push_back(js[std::to_string(j).c_str()]);
-		table_data.push_back(json_data);
+		j.clear();
+		// read JSON
+		std::ifstream table("data/"+ available_table[k] + ".json", std::ios::in);
+		j = nlohmann::json::parse(table);
+
+		collect.name = j["name"];
+
+		if (j["open"] == "true")
+			collect.isdefault = true;
+		
+		for (int i = 0; i < 7; i++)
+		{
+			json_data.clear();
+			nlohmann::json js(j[day[i].c_str()]);
+
+			if(js.size() > collect.time_stamp_limit)
+				collect.time_stamp_limit = js.size();
+
+			for (int j = 1; j <= collect.time_stamp_limit; j++)
+				json_data.push_back(js[std::to_string(j).c_str()]);
+			collect.data.push_back(json_data);
+		}
+		API.push_back(collect);
+		table.close();
 	}
 }
 
-void json_table::update()
+void json_table::availtable()
+{
+	for (const std::filesystem::directory_entry& i : std::filesystem::directory_iterator("data/"))
+	{
+		temp = i.path().string();
+		temp.erase(temp.end() - 5, temp.end()); // remove extension
+		temp.erase(temp.begin(), temp.begin() + 5); // remove parent dir
+		available_table.push_back(temp);
+	}
+}
+
+json_table::json_table()
+{
+	availtable();
+	loadtable();
+}
+
+json_table::~json_table()
 {
 }
