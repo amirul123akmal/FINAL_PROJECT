@@ -20,11 +20,10 @@ public:
 
 private:
 	bool exit = false;
-	bool home = true;
 	bool createtable = false;
 	bool opentable = false;
 
-	void homepage(bool* enable);
+	void homepage();
 	void table(bool* open);
 	void tablecreation(bool* open);
 

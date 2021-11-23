@@ -67,9 +67,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="data\defaultTable.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="res\Warning.h" />
     <None Include="src\glfw3.dll" />
     <None Include="data\default.json" />

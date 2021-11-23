@@ -8,9 +8,9 @@ int render::runMainProcess()
 		// Set New Frame
 		glfwPollEvents();
 		new_frame();
-
+		
 		// Frame body
-		if (home) { homepage(&home); }
+		homepage();
 		if (createtable) { tablecreation(&createtable); }
 		if (opentable) { table(&opentable); }
 
@@ -28,7 +28,7 @@ int render::runMainProcess()
 }
 
 // Table
-void render::homepage(bool* enable)
+void render::homepage()
 {
 	if (ImGui::Begin("Homepage"))
 	{
@@ -48,6 +48,7 @@ void render::homepage(bool* enable)
 		}
 		if (ImGui::Button("Exit"))
 			exit = true;
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	}
 }
 
@@ -137,7 +138,7 @@ int render::glfwinit()
 	if (!window)
 		return 1;
 	glfwMakeContextCurrent(window);
-	glfwSwapInterval(0);
+	glfwSwapInterval(1);
 	return 0;
 }
 
