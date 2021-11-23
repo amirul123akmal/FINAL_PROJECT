@@ -109,6 +109,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\Basics.h" />
+    <ClInclude Include="res\Definitive.h" />
     <ClInclude Include="res\Header.h" />
     <ClInclude Include="res\Renderer.h" />
     <ClInclude Include="res\table.h" />

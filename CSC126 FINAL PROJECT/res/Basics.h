@@ -1,16 +1,16 @@
 #pragma once
 
 // External Lib Header
-#include <boost/asio/thread_pool.hpp>
-#include <boost/asio/post.hpp>
-#include <nlohmann/json.hpp>
+#include "boost/asio/thread_pool.hpp"
+#include "boost/asio/post.hpp"
+#include "nlohmann/json.hpp"
 
 // GUI Stuff
-#include "imgui/imgui.h"
-#include <tchar.h>
 #include "GLFW/glfw3.h"
+#include "imgui/imgui.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
 #include "imgui/backends/imgui_impl_glfw.h"
+#include <tchar.h>
 
 // STL
 #include <iostream>
@@ -24,6 +24,8 @@
 #include <cstdio>
 #include <Windows.h>
 
+// Headers
+#include "Definitive.h"
 
 // Easy Usage
 // Mostly for debug

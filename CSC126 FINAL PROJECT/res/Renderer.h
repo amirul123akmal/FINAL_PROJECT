@@ -20,12 +20,17 @@ public:
 
 private:
 	bool exit = false;
+	bool home = true;
 	bool createtable = false;
 	bool opentable = false;
 
-	void homepage();
+	void menubar();
+	void homepage(bool* open);
 	void table(bool* open);
 	void tablecreation(bool* open);
+
+	char name[20] = "Default Table Name";
+	char namenow[20] = "Default name";
 
 private:
 	void imguiinit();

@@ -10,7 +10,8 @@ int render::runMainProcess()
 		new_frame();
 		
 		// Frame body
-		homepage();
+		menubar();
+		if (home) homepage(&home);
 		if (createtable) { tablecreation(&createtable); }
 		if (opentable) { table(&opentable); }
 
@@ -28,9 +29,23 @@ int render::runMainProcess()
 }
 
 // Table
-void render::homepage()
+void render::menubar()
 {
-	if (ImGui::Begin("Homepage"))
+	if (ImGui::BeginMainMenuBar())
+	{
+		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, {16,0});
+		ImGui::MenuItem("Homepage", 0, &home);
+		ImGui::MenuItem("Table", 0, &opentable);
+		ImGui::MenuItem("Custom Table", 0, &createtable);
+		ImGui::MenuItem("Exit", 0, &exit);
+		ImGui::PopStyleVar();
+		ImGui::EndMainMenuBar();
+	}
+}
+
+void render::homepage(bool* open)
+{
+	if (ImGui::Begin("Homepage", open))
 	{
 		if (ImGui::Button("Table"))
 		{
@@ -100,7 +115,6 @@ void render::table(bool* open)
 					}
 					ImGui::EndTable();
 				}
-
 			}
 		}
 		ImGui::End();
@@ -111,6 +125,40 @@ void render::tablecreation(bool* open)
 {
 	if (ImGui::Begin("Create Custom Table", open))
 	{
+		ImGui::Text("Name for the table: ");
+		if (ImGui::InputText(namenow, name, 20, ImGuiInputTextFlags_EnterReturnsTrue))
+		{
+			strcpy_s(namenow, name);
+			std::cout << namenow << "\n";
+		}
+		ImGui::Spacing();
+		if (ImGui::BeginTable("Jadual", RENDER_TABLE_DEFAULT_COLUMN, ImGuiTableFlags_Borders))
+		{
+			ImGui::TableNextRow();
+			ImGui::TableSetColumnIndex(0);
+			ImGui::Text("Hari");
+			int count = 8;
+			for (int column = 1; column < RENDER_TABLE_DEFAULT_COLUMN; column++)
+			{
+				ImGui::TableSetColumnIndex(column);
+				ImGui::Text("%d:00", count);
+				ImGui::TableSetColumnIndex(++column);
+				ImGui::Text("%d:30", count++);
+			}
+			ImGui::TableNextRow();
+			for (int index = 0; index < 7; index++)
+			{
+				ImGui::TableSetColumnIndex(0);
+				ImGui::Text("%s", day[index].c_str());
+				for (int j = 0; j < RENDER_TABLE_DEFAULT_COLUMN - 1; j++)
+				{
+					ImGui::TableSetColumnIndex(j + 1);
+				}
+				ImGui::TableNextRow();
+			}
+			ImGui::EndTable();
+		}
+		ImGui::End();
 	}
 }
 
@@ -134,7 +182,8 @@ void render::initall()
 
 int render::glfwinit()
 {
-	window = glfwCreateWindow(1280, 720, "CSC126 Mini Project", NULL, NULL);
+	window = glfwCreateWindow(1920, 1080, "CSC126 Mini Project", NULL, NULL);
+	glfwMaximizeWindow(window);
 	if (!window)
 		return 1;
 	glfwMakeContextCurrent(window);
