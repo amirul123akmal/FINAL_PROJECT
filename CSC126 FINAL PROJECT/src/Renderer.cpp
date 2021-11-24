@@ -3,18 +3,22 @@
 // The main loop
 int render::runMainProcess()
 {
+	lasttime = glfwGetTime();
 	while (!glfwWindowShouldClose(window) && !exit)
 	{
 		// Set New Frame
 		glfwPollEvents();
 		new_frame();
-		
+
 		// Frame body
 		menubar();
+		if (debug) debug_mode(&debug);
 		if (home) homepage(&home);
 		if (createtable) { tablecreation(&createtable); }
 		if (opentable) { table(&opentable); }
 
+
+		FPS_limit(FPS_LIMIT);
 		// Render Frame
 		ImGui::Render();
 		glfwGetFramebufferSize(window, &width, &height);
@@ -28,17 +32,42 @@ int render::runMainProcess()
 	return 0;
 }
 
+void render::FPS_limit(int fps)
+{
+	while (glfwGetTime() < lasttime + 1.0 / fps) {
+		// TODO: Put the thread to sleep, yield, or simply do nothing
+	}
+	lasttime += 1.0 / fps;
+}
+
+void render::debug_mode(bool* open)
+{
+	if (ImGui::Begin("Debugging tool"))
+	{
+		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
+		ImGui::SliderInt("FPS", &FPS_LIMIT, 5, 800, "%d");
+		if (ImGui::Button("Reset FPS to Default"))
+			FPS_LIMIT = 120;
+	}
+}
+
 // Table
+static bool normal = true;
+
 void render::menubar()
 {
 	if (ImGui::BeginMainMenuBar())
 	{
-		ImGui::PushStyleVar(ImGuiStyleVar_ItemSpacing, {16,0});
 		ImGui::MenuItem("Homepage", 0, &home);
-		ImGui::MenuItem("Table", 0, &opentable);
-		ImGui::MenuItem("Custom Table", 0, &createtable);
+		if(ImGui::BeginMenu("Table"))
+		{
+			ImGui::MenuItem("Open Table", 0, &opentable);
+			ImGui::MenuItem("Custom Table", 0, &createtable);
+			ImGui::MenuItem("Table Mode", 0, &normal);
+			ImGui::EndMenu();
+		}
+		ImGui::MenuItem("Debug", 0, &debug);
 		ImGui::MenuItem("Exit", 0, &exit);
-		ImGui::PopStyleVar();
 		ImGui::EndMainMenuBar();
 	}
 }
@@ -63,7 +92,6 @@ void render::homepage(bool* open)
 		}
 		if (ImGui::Button("Exit"))
 			exit = true;
-		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
 	}
 }
 
@@ -187,7 +215,7 @@ int render::glfwinit()
 	if (!window)
 		return 1;
 	glfwMakeContextCurrent(window);
-	glfwSwapInterval(1);
+	glfwSwapInterval(0);
 	return 0;
 }
 

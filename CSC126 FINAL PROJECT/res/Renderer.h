@@ -23,15 +23,22 @@ private:
 	bool home = true;
 	bool createtable = false;
 	bool opentable = false;
+	bool debug = false;
 
 	void menubar();
+	void debug_mode(bool* open);
 	void homepage(bool* open);
 	void table(bool* open);
 	void tablecreation(bool* open);
 
 	char name[20] = "Default Table Name";
 	char namenow[20] = "Default name";
+private:
+	// FPS STUFF
+	double lasttime = 0;
+	int FPS_LIMIT = 120;
 
+	void FPS_limit(int fps);
 private:
 	void imguiinit();
 	int glfwinit();

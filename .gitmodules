@@ -10,3 +10,6 @@
 [submodule "CSC126 FINAL PROJECT/Vendor/imgui"]
 	path = CSC126 FINAL PROJECT/Vendor/imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule "CSC126 FINAL PROJECT/Vendor/spdlog"]
+	path = CSC126 FINAL PROJECT/Vendor/spdlog
+	url = https://github.com/gabime/spdlog.git
