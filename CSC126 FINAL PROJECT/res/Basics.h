@@ -4,6 +4,7 @@
 #include "boost/asio/thread_pool.hpp"
 #include "boost/asio/post.hpp"
 #include "nlohmann/json.hpp"
+#include "spdlog/spdlog.h"
 
 // GUI Stuff
 #include "GLFW/glfw3.h"
@@ -15,6 +16,7 @@
 // STL
 #include <iostream>
 #include <string>
+#include <time.h>
 #include <vector>
 #include <fstream>
 #include <sstream>

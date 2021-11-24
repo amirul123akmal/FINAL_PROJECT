@@ -57,11 +57,12 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions);;_WIN32_WINNT=0x0601</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)CSC126 FINAL PROJECT\Vendor\;$(SolutionDir)lib/;$(SolutionDir)CSC126 FINAL PROJECT\res\;$(SolutionDir)CSC126 FINAL PROJECT\Vendor\json\include\;$(SolutionDir)CSC126 FINAL PROJECT\Vendor\imgui\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)lib/;$(SolutionDir)CSC126 FINAL PROJECT\res\;$(SolutionDir)CSC126 FINAL PROJECT\Vendor\json\include\;$(SolutionDir)CSC126 FINAL PROJECT\Vendor\imgui\;$(SolutionDir)CSC126 FINAL PROJECT\Vendor\spdlog\include\;$(SolutionDir)CSC126 FINAL PROJECT\Vendor\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <LanguageStandard_C>stdc17</LanguageStandard_C>
+      <OpenMPSupport>false</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -78,7 +79,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions);_WIN32_WINNT=0x0601</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)CSC126 FINAL PROJECT\Vendor\;$(SolutionDir)lib/;$(SolutionDir)CSC126 FINAL PROJECT\res\;$(SolutionDir)CSC126 FINAL PROJECT\Vendor\json\include\;$(SolutionDir)CSC126 FINAL PROJECT\Vendor\imgui\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)lib/;$(SolutionDir)CSC126 FINAL PROJECT\res\;$(SolutionDir)CSC126 FINAL PROJECT\Vendor\json\include\;$(SolutionDir)CSC126 FINAL PROJECT\Vendor\imgui\;$(SolutionDir)CSC126 FINAL PROJECT\Vendor\spdlog\include\;$(SolutionDir)CSC126 FINAL PROJECT\Vendor\;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
       <LanguageStandard>stdcpp17</LanguageStandard>
       <FavorSizeOrSpeed>Speed</FavorSizeOrSpeed>
@@ -86,7 +87,7 @@
       <EnableParallelCodeGeneration>true</EnableParallelCodeGeneration>
       <EnableEnhancedInstructionSet>NotSet</EnableEnhancedInstructionSet>
       <FloatingPointModel>Fast</FloatingPointModel>
-      <OpenMPSupport>true</OpenMPSupport>
+      <OpenMPSupport>false</OpenMPSupport>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -128,7 +129,10 @@
     <ClInclude Include="Vendor\imgui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="data\default.json" />
+    <None Include="data\Customization\CreateTable.json" />
+    <None Include="data\Customization\mainWindow.json" />
+    <None Include="data\Customization\OpenTable.json" />
+    <None Include="data\Table\default.json" />
     <None Include="res\Warning.h" />
     <None Include="src\glfw3.dll" />
   </ItemGroup>

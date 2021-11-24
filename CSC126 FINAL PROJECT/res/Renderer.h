@@ -34,15 +34,21 @@ private:
 	char name[20] = "Default Table Name";
 	char namenow[20] = "Default name";
 private:
-	// FPS STUFF
-	double lasttime = 0;
-	int FPS_LIMIT = 120;
+	// Shorting Helper Functions
+	void t_horizon(int h);
+	void t_vertical(int h);
 
-	void FPS_limit(int fps);
+	// Menu Bar
+	bool customization = false;
+
+	void TableModeBar();
+	void customize(bool* open);
+
 private:
 	void imguiinit();
 	int glfwinit();
 	static void glfw_error_callback(int error, const char* description);
+
 private:
 	// Window Stuff
 	const char* glsl_version = "#version 130";
@@ -53,4 +59,17 @@ private:
 	int width = 0, height = 0;
 	ImVec4 clear = ImVec4(.45f, .55f, .6f, 1.0f);
 	ImVec2 size = ImVec2(200,200);
+
+	// FPS STUFF
+	double lasttime = 0;
+	int FPS_LIMIT = 60;
+	int FPS_HOLDER = 60;
+	int count = 0;
+	time_t timeStart = time(NULL);
+	time_t timeEnd;
+	float fpstime[60] = {0};
+	const float fpstime_cst[60] = {0};
+
+	void FPS_limit(int fps);
+	void fpsgraph();
 };

@@ -172,7 +172,7 @@ void json_table::loadtable()
 		json_data.clear();
 		j.clear();
 		// read JSON
-		std::ifstream table("data/"+ available_table[k] + ".json", std::ios::in);
+		std::ifstream table("data/Table/"+ available_table[k] + ".json", std::ios::in);
 		j = nlohmann::json::parse(table);
 
 		collect.name = j["name"];
@@ -199,12 +199,20 @@ void json_table::loadtable()
 
 void json_table::availtable()
 {
-	for (const std::filesystem::directory_entry& i : std::filesystem::directory_iterator("data/"))
+	try
 	{
-		temp = i.path().string();
-		temp.erase(temp.end() - 5, temp.end()); // remove extension
-		temp.erase(temp.begin(), temp.begin() + 5); // remove parent dir
-		available_table.push_back(temp);
+		for (const std::filesystem::directory_entry& i : std::filesystem::directory_iterator("data/Table/"))
+		{
+			temp = i.path().string();
+			temp.erase(temp.end() - 5, temp.end()); // remove extension
+			temp.erase(temp.begin(), temp.begin() + 11); // remove parent dir
+			available_table.push_back(temp);
+		}
+		spdlog::info("Loaded all table");
+	}
+	catch (std::string e)
+	{
+		spdlog::error("Failed load table");
 	}
 }
 
