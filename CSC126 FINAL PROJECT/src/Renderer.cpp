@@ -12,12 +12,12 @@ int render::runMainProcess()
 
 		// Frame body
 		menubar();
+		fpsgraph();
 		if (debug) debug_mode(&debug);
 		if (home) homepage(&home);
 		if (createtable) { tablecreation(&createtable); }
 		if (opentable) { table(&opentable); }
 		if (customization) { customize(&customization); }
-
 
 		FPS_limit(FPS_LIMIT);
 		// Render Frame
@@ -48,10 +48,12 @@ void render::debug_mode(bool* open)
 		ImGui::SliderInt("FPS", &FPS_LIMIT, 15, 800, "%d");
 		//if (ImGui::InputInt("##Spesific FPS", , ImGuiInputTextFlags_EnterReturnsTrue))
 		//	FPS_LIMIT = FPS_HOLDER;
-		fpsgraph();
-		ImGui::SameLine();
+		if (ImPlot::BeginPlot("##FPS Graph", "Time", "FPS", {-1, 0}, ImPlotFlags_Crosshairs, 0, ImPlotAxisFlags_AutoFit))
+		{
+			ImPlot::PlotLine("###FPS INLINE GRAPH", timed, fpstime, 60);
+			ImPlot::EndPlot();
+		}
 		ImGui::Text("Spesific FPS");
-		ImGui::PlotLines("##FPS Graph Plotting", fpstime_cst, sizeof(fpstime_cst));
 		if (ImGui::Button("Reset FPS to Default"))
 			FPS_LIMIT = 60;
 
@@ -212,6 +214,8 @@ void render::initall()
 	int a;
 	a = glfwinit();
 	imguiinit();
+	for (int i = 0; i < 60; i++)
+		timed[i] = i;
 }
 
 int render::glfwinit()
@@ -228,6 +232,7 @@ int render::glfwinit()
 void render::imguiinit()
 {
 	ImGui::CreateContext();
+	ImPlot::CreateContext();
 	io = ImGui::GetIO(); (void)io;
 	ImGui::StyleColorsDark();
 
@@ -334,12 +339,17 @@ void render::customize(bool* open)
 
 void render::fpsgraph()
 {
-	time(&timeEnd);
-	if (difftime(timeStart, timeEnd) > 60)
+	timeNew = std::chrono::system_clock::now();
+	std::chrono::seconds second = std::chrono::duration_cast<std::chrono::seconds>(timeNew - timeNow);
+	if (second >= timeskip)
 	{
-		timeStart = timeEnd;
-		fpstime[++count] = ImGui::GetIO().Framerate;
+		timeNow = timeNew;
+		fpstime[count++] = ImGui::GetIO().Framerate;
 	}
 	if (count > 60)
+	{
 		count = 0;
+		for (int i = 0; i < 60; i++)
+			fpstime[i] = 0;
+	}
 }		

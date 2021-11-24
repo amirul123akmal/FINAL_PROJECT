@@ -111,6 +111,8 @@
     <ClCompile Include="Vendor\imgui\imgui_draw.cpp" />
     <ClCompile Include="Vendor\imgui\imgui_tables.cpp" />
     <ClCompile Include="Vendor\imgui\imgui_widgets.cpp" />
+    <ClCompile Include="Vendor\implot\epezent_implot\implot.cpp" />
+    <ClCompile Include="Vendor\implot\epezent_implot\implot_items.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\Basics.h" />
@@ -127,6 +129,8 @@
     <ClInclude Include="Vendor\imgui\imstb_rectpack.h" />
     <ClInclude Include="Vendor\imgui\imstb_textedit.h" />
     <ClInclude Include="Vendor\imgui\imstb_truetype.h" />
+    <ClInclude Include="Vendor\implot\epezent_implot\implot.h" />
+    <ClInclude Include="Vendor\implot\epezent_implot\implot_internal.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="data\Customization\CreateTable.json" />

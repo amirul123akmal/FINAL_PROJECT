@@ -65,10 +65,11 @@ private:
 	int FPS_LIMIT = 60;
 	int FPS_HOLDER = 60;
 	int count = 0;
-	time_t timeStart = time(NULL);
-	time_t timeEnd;
+	std::chrono::system_clock::time_point timeNow = std::chrono::system_clock::now();
+	std::chrono::system_clock::time_point timeNew;
+	const std::chrono::seconds timeskip = (std::chrono::seconds)1;
 	float fpstime[60] = {0};
-	const float fpstime_cst[60] = {0};
+	float timed[60] = {0};
 
 	void FPS_limit(int fps);
 	void fpsgraph();
