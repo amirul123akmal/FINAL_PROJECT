@@ -18,7 +18,7 @@ int render::runMainProcess()
 		if (home) homepage(&home);
 		if (createtable) { tablecreation(&createtable); }
 		if (opentable) { table(&opentable); }
-		if (customization) { customize(&customization); }
+		if (customization) { customize(&customization, clear, "Main Window"); }
 
 		FPS_limit(FPS_LIMIT);
 		// Render Frame
@@ -111,13 +111,17 @@ void render::menubar()
 
 // Table
 static float childHeight = 50;
+static bool tablewindowbg = false;
+static bool tablebg = false;
+static bool tableline = false;
 void render::table(bool* open)
 {
+	ImGui::PushStyleColor(ImGuiCol_WindowBg, TableWindowColorSpace);
 	if (ImGui::Begin("Table", open, ImGuiWindowFlags_MenuBar))
 	{
 		ImGui::PushStyleColor(ImGuiCol_ChildBg, { 120 });
 		// Area for dragging and changing the size
-		if (ImGui::BeginChildFrame(tableopenarea, { -1, childHeight }, ImGuiWindowFlags_NoScrollbar))
+		if (ImGui::BeginChildFrame(tableopenarea, { -1, childHeight }, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_AlwaysAutoResize))
 		{
 			if (ImGui::BeginChild(dragresizableArea, { -1, childHeight }, false))
 			{
@@ -130,9 +134,18 @@ void render::table(bool* open)
 				{
 					// Vertical Spacing on Horizontal Table
 					{
-						if (spacingVertical < 0)
-							spacingVertical = 0;
-						spacingVertical -= ImGui::GetIO().MouseWheel;
+						if (table_horizontal)
+						{
+							if (spacingVertical < 0)
+								spacingVertical = 0;
+							spacingVertical -= ImGui::GetIO().MouseWheel;
+						}
+						if (table_vertical)
+						{
+							if (spacingVertical < 0)
+								spacingVertical = 0;
+							spacingVertical += ImGui::GetIO().MouseWheel;
+						}
 					}
 					// Horizontal Spacing on Vertical Table
 					{
@@ -149,6 +162,7 @@ void render::table(bool* open)
 			ImGui::EndChildFrame();
 		}
 		ImGui::PopStyleColor();
+
 		if(ImGui::BeginMenuBar())
 		{
 			if (ImGui::BeginMenu("Table"))
@@ -162,26 +176,36 @@ void render::table(bool* open)
 				TableModeBar();
 				ImGui::EndMenu();
 			}
+			if (ImGui::BeginMenu("Customize"))
+			{
+				ImGui::MenuItem("Table's Window Background", 0, &tablewindowbg);
+				ImGui::MenuItem("Table Background", 0, &tablebg);
+				ImGui::MenuItem("Table's Line", 0, &tableline);
+				ImGui::EndMenu();
+			}
 			ImGui::EndMenuBar();
 		}
+		if(tablewindowbg) customize(&tablewindowbg, TableWindowColorSpace, "Table Window Background");
+		if(tablebg) customize(&tablebg, TableBgColorSpace, "Table Background");
+		if(tableline) customize(&tableline, TableLineColorSpace, "Table line Color");
+
 		ImGui::Separator();
 		for (int h = 0; h < API.size(); h++)
 		{
 			if ((bool)API[h].isdefault)
 			{
+				ImGui::PushStyleColor(ImGuiCol_TableRowBg, TableBgColorSpace);
 				ImGui::Text(API[h].name.c_str());
 				if (table_horizontal)
-				{
 					t_horizon(h);
-				}
 				else if (table_vertical)
-				{
 					t_vertical(h);
-				}
+				ImGui::PopStyleColor();
 			}
 		}
 		ImGui::End();
 	}
+	ImGui::PopStyleColor();
 }
 
 void render::tablecreation(bool* open)
@@ -234,7 +258,6 @@ void render::tablecreation(bool* open)
 		ImGui::End();
 	}
 }
-
 
 // Class upon creation & deletion setup
 render::render()
@@ -326,15 +349,19 @@ void render::t_horizon(int h)
 
 void render::t_vertical(int h)
 {
-	if (ImGui::BeginTable("Jadual", 8, ImGuiTableFlags_Borders, {spacingHorizontal, 0}))
+	if (ImGui::BeginTable("Jadual", 8, ImGuiTableFlags_Borders, {spacingHorizontal, 500}))
 	{
 		ImGui::TableNextRow();
 		ImGui::TableSetColumnIndex(0);
+		ImGui::Dummy({spacingVertical, 0});
+		ImGui::SameLine();
 		ImGui::Text("Hari");
 		int count = 8;
 		for (int row = -1; row < API[h].time_stamp_limit; row++)
 		{
 			ImGui::TableSetColumnIndex(0);
+			ImGui::Dummy({spacingVertical, 0});
+			ImGui::SameLine();
 			if (row % 2 == 0)
 				ImGui::Text("%d:00", count);
 			else if (row % 2 == 1)
@@ -342,14 +369,16 @@ void render::t_vertical(int h)
 			for (int i = 0 ; i < 7 ; i++)
 			{
 				ImGui::TableNextColumn();
-				ImGui::Dummy({ 0, spacingVertical });
+				ImGui::Dummy({spacingVertical, 0});
+				ImGui::SameLine();
 				if (row == -1)
 					ImGui::Text(day[i].c_str());
 				else
 					ImGui::Text("%s", API[h].data[i][row].c_str());
-				ImGui::Dummy({ 0, spacingVertical });
+				ImGui::Dummy({spacingVertical, 0});
 			}
-			ImGui::TableNextRow();
+			if(row != API[h].time_stamp_limit - 1)
+				ImGui::TableNextRow();
 		}
 		ImGui::EndTable();
 	}
@@ -368,13 +397,15 @@ void render::TableModeBar()
 	}
 }
 
-void render::customize(bool* open) 
+void render::customize(bool* open, ImVec4& data, const char* whichWindow) 
 {
 	if (ImGui::Begin("##Customizing", open))
 	{
-		ImGui::ColorPicker3("##Color Picker", &clear.x);
+		ImGui::Text("%s", whichWindow);
+		ImGui::ColorPicker3("##Color Picker", &data.x);
 		ImGui::End();
 	}
+	ImGui::Dummy({0, 20});
 }
 
 void render::fpsgraph()
