@@ -49,6 +49,9 @@ void render::debug_mode(bool* open)
 		ImGui::SameLine();
 		if (ImGui::Button("Reset FPS to Default"))
 			FPS_LIMIT = 60;
+		ImGui::InputInt("##Set FPS", &FPS_LIMIT, 5, 50, ImGuiInputTextFlags_EnterReturnsTrue);
+		ImGui::SameLine();
+		ImGui::Text(" <-- Set Specific FPS");
 		ImPlot::SetNextPlotLimitsX(0, 60);
 		ImPlot::SetNextPlotLimitsY(0, 500);
 		if (ImPlot::BeginPlot("##FPS Graph", "Time", "FPS", {-1, 200}, ImPlotFlags_Crosshairs || ImPlotFlags_CanvasOnly))
