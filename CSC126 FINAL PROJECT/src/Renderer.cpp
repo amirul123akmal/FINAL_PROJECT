@@ -58,7 +58,11 @@ void render::debug_mode(bool* open)
 			ImPlot::EndPlot();
 		}
 		char tempo[] = "Amazing";
-		ImGui::InputTextMultiline("##Logging Console", tempo,2* sizeof(tempo), { -1, 0 }, ImGuiInputTextFlags_ReadOnly || ImGuiInputTextFlags_NoMarkEdited);
+		if (ImGui::BeginChild("Consoles", 0, true))
+		{
+			ImGui::InputTextMultiline("##Logging Console", tempo,2* sizeof(tempo), { -1, 0 }, ImGuiInputTextFlags_ReadOnly || ImGuiInputTextFlags_NoMarkEdited);
+
+		}
 	}
 }
 

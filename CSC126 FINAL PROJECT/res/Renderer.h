@@ -55,6 +55,8 @@ private:
 	GLFWwindow* window = NULL;
 	ImGuiIO io;
 
+private:
+	// DEBUGGING
 	// Frame stuff
 	int width = 0, height = 0;
 	ImVec4 clear = ImVec4(.45f, .55f, .6f, 1.0f);
@@ -72,4 +74,7 @@ private:
 
 	void FPS_limit(int fps);
 	void fpsgraph();
+
+	// CONSOLE LIKE
+	ImGuiID consoling;
 };
