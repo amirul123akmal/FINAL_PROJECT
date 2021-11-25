@@ -28,41 +28,47 @@ private:
 	void menubar();
 	void debug_mode(bool* open);
 	void homepage(bool* open);
-	void table(bool* open);
+
+	// Table stuff
 	void tablecreation(bool* open);
+	void table(bool* open);
 
 	char name[20] = "Default Table Name";
 	char namenow[20] = "Default name";
+	float spacingVertical = 0;
+	float spacingHorizontal = -1;
+	ImVec4 TableColorSpace = {};
+	ImGuiID tableopenarea = 12099;
+	ImGuiID dragresizableArea = 12098;
 private:
 	// Shorting Helper Functions
 	void t_horizon(int h);
 	void t_vertical(int h);
 
-	// Menu Bar
+	// MENU BAR
 	bool customization = false;
 
 	void TableModeBar();
 	void customize(bool* open);
 
-private:
+	// INITIALIZATION
 	void imguiinit();
 	int glfwinit();
 	static void glfw_error_callback(int error, const char* description);
 
-private:
-	// Window Stuff
+	// WINDOW RELATED
 	const char* glsl_version = "#version 130";
 	GLFWwindow* window = NULL;
 	ImGuiIO io;
 
 private:
 	// DEBUGGING
-	// Frame stuff
+	// FRAME RELATED
 	int width = 0, height = 0;
 	ImVec4 clear = ImVec4(.45f, .55f, .6f, 1.0f);
 	ImVec2 size = ImVec2(200,200);
 
-	// FPS STUFF
+	// FPS RELATED
 	double lasttime = 0;
 	int FPS_LIMIT = 60;
 	int FPS_HOLDER = 60;

@@ -110,10 +110,45 @@ void render::menubar()
 }
 
 // Table
+static float childHeight = 50;
 void render::table(bool* open)
 {
 	if (ImGui::Begin("Table", open, ImGuiWindowFlags_MenuBar))
 	{
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, { 120 });
+		// Area for dragging and changing the size
+		if (ImGui::BeginChildFrame(tableopenarea, { -1, childHeight }, ImGuiWindowFlags_NoScrollbar))
+		{
+			if (ImGui::BeginChild(dragresizableArea, { -1, childHeight }, false))
+			{
+				// Capture mouse position into child area
+				if (
+					(ImGui::GetMousePos().x > ImGui::GetWindowPos().x && ImGui::GetMousePos().x < ImGui::GetWindowPos().x + ImGui::GetWindowWidth())
+					&&
+					(ImGui::GetMousePos().y > ImGui::GetWindowPos().y && ImGui::GetMousePos().y < ImGui::GetWindowPos().y + childHeight)
+					)
+				{
+					// Vertical Spacing on Horizontal Table
+					{
+						if (spacingVertical < 0)
+							spacingVertical = 0;
+						spacingVertical -= ImGui::GetIO().MouseWheel;
+					}
+					// Horizontal Spacing on Vertical Table
+					{
+						if (ImGui::GetIO().MouseDown[0])
+						{
+							spacingHorizontal += ImGui::GetIO().MouseDelta.x;
+							if (spacingHorizontal > -1)
+								spacingHorizontal = -1;
+						}
+					}
+				}
+			}
+			ImGui::EndChild();
+			ImGui::EndChildFrame();
+		}
+		ImGui::PopStyleColor();
 		if(ImGui::BeginMenuBar())
 		{
 			if (ImGui::BeginMenu("Table"))
@@ -129,7 +164,7 @@ void render::table(bool* open)
 			}
 			ImGui::EndMenuBar();
 		}
-		ImGui::Dummy({0.0f, 35.0f});
+		ImGui::Separator();
 		for (int h = 0; h < API.size(); h++)
 		{
 			if ((bool)API[h].isdefault)
@@ -270,17 +305,20 @@ void render::t_horizon(int h)
 			ImGui::TableSetColumnIndex(++column);
 			ImGui::Text("%d:30", count++);
 		}
-		ImGui::TableNextRow();
 		for (int index = 0; index < API[h].data.size(); index++)
 		{
+			ImGui::TableNextRow();
 			ImGui::TableSetColumnIndex(0);
+			ImGui::Dummy({0, spacingVertical});
 			ImGui::Text("%s", day[index].c_str());
+			ImGui::Dummy({0, spacingVertical});
 			for (int j = 0; j < API[h].data[index].size() - 1; j++)
 			{
 				ImGui::TableSetColumnIndex(j + 1);
+				ImGui::Dummy({0, spacingVertical});
 				ImGui::Text("%s", API[h].data[index][j].c_str());
+				ImGui::Dummy({0, spacingVertical});
 			}
-			ImGui::TableNextRow();
 		}
 		ImGui::EndTable();
 	}
@@ -288,7 +326,7 @@ void render::t_horizon(int h)
 
 void render::t_vertical(int h)
 {
-	if (ImGui::BeginTable("Jadual", 8, ImGuiTableFlags_Borders))
+	if (ImGui::BeginTable("Jadual", 8, ImGuiTableFlags_Borders, {spacingHorizontal, 0}))
 	{
 		ImGui::TableNextRow();
 		ImGui::TableSetColumnIndex(0);
@@ -304,10 +342,12 @@ void render::t_vertical(int h)
 			for (int i = 0 ; i < 7 ; i++)
 			{
 				ImGui::TableNextColumn();
+				ImGui::Dummy({ 0, spacingVertical });
 				if (row == -1)
 					ImGui::Text(day[i].c_str());
 				else
 					ImGui::Text("%s", API[h].data[i][row].c_str());
+				ImGui::Dummy({ 0, spacingVertical });
 			}
 			ImGui::TableNextRow();
 		}
@@ -340,7 +380,6 @@ void render::customize(bool* open)
 void render::fpsgraph()
 {
 	t += ImGui::GetIO().DeltaTime;
-	spdlog::info("Time t = {}", t);
 	if (t > 60)
 	{
 		t = 0;
