@@ -16,7 +16,6 @@ CSC126 FINAL PROJECT\data\*
 !CSC126 FINAL PROJECT\data\default.json
 imgui.ini
 CSC126 FINAL PROJECT\imgui.ini
-wiki\**
 
 # User-specific files (MonoDevelop/Xamarin Studio)
 *.userprefs
