@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "Renderer.h"
 
 // The main loop
@@ -27,7 +28,6 @@ int render::runMainProcess()
 		glClearColor(clear.x * clear.w, clear.y * clear.w, clear.z * clear.w, clear.w);
 		glClear(GL_COLOR_BUFFER_BIT);
 		::imggl_render(ImGui::GetDrawData());
-
 		glfwSwapBuffers(window);
 	}
 	return 0;

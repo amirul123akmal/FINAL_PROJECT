@@ -51,13 +51,16 @@
     <ClCompile Include="Vendor\imgui\backends\imgui_impl_opengl3.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\pch.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="Vendor\implot\epezent_implot\implot.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Vendor\implot\epezent_implot\implot_items.cpp">
+    <ClCompile Include="Vendor\implot\epezent_implot\implot_demo.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Vendor\implot\epezent_implot\implot_demo.cpp">
+    <ClCompile Include="Vendor\implot\epezent_implot\implot_items.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -108,6 +111,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Vendor\implot\epezent_implot\implot_internal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="res\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
