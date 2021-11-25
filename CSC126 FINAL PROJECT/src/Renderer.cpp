@@ -45,18 +45,20 @@ void render::debug_mode(bool* open)
 	if (ImGui::Begin("Debugging tool", open))
 	{
 		ImGui::Text("Application average %.3f ms/frame (%.1f FPS)", 1000.0f / ImGui::GetIO().Framerate, ImGui::GetIO().Framerate);
-		ImGui::SliderInt("FPS", &FPS_LIMIT, 15, 800, "%d");
-		//if (ImGui::InputInt("##Spesific FPS", , ImGuiInputTextFlags_EnterReturnsTrue))
-		//	FPS_LIMIT = FPS_HOLDER;
-		if (ImPlot::BeginPlot("##FPS Graph", "Time", "FPS", {-1, 0}, ImPlotFlags_Crosshairs, 0, ImPlotAxisFlags_AutoFit))
-		{
-			ImPlot::PlotLine("###FPS INLINE GRAPH", timed, fpstime, 60);
-			ImPlot::EndPlot();
-		}
-		ImGui::Text("Spesific FPS");
+		ImGui::SliderInt("FPS", &FPS_LIMIT, 15, 500, "%d");
+		ImGui::SameLine();
 		if (ImGui::Button("Reset FPS to Default"))
 			FPS_LIMIT = 60;
-
+		ImPlot::SetNextPlotLimitsX(0, 60);
+		ImPlot::SetNextPlotLimitsY(0, 500);
+		if (ImPlot::BeginPlot("##FPS Graph", "Time", "FPS", {-1, 200}, ImPlotFlags_Crosshairs || ImPlotFlags_CanvasOnly))
+		{
+			ImPlot::PlotShaded("##FPS INLINE SHADED", &datax[0].x, &datax[0].y, datax.size(),-INFINITY, 0, 2 * sizeof(float));
+			ImPlot::PlotLine("###FPS INLINE GRAPH", &datax[0].x, &datax[0].y, datax.size(), 0, 2*sizeof(float));
+			ImPlot::EndPlot();
+		}
+		char tempo[] = "Amazing";
+		ImGui::InputTextMultiline("##Logging Console", tempo,2* sizeof(tempo), { -1, 0 }, ImGuiInputTextFlags_ReadOnly || ImGuiInputTextFlags_NoMarkEdited);
 	}
 }
 
@@ -214,8 +216,6 @@ void render::initall()
 	int a;
 	a = glfwinit();
 	imguiinit();
-	for (int i = 0; i < 60; i++)
-		timed[i] = i;
 }
 
 int render::glfwinit()
@@ -339,17 +339,15 @@ void render::customize(bool* open)
 
 void render::fpsgraph()
 {
-	timeNew = std::chrono::system_clock::now();
-	std::chrono::seconds second = std::chrono::duration_cast<std::chrono::seconds>(timeNew - timeNow);
-	if (second >= timeskip)
+	t += ImGui::GetIO().DeltaTime;
+	spdlog::info("Time t = {}", t);
+	if (t > 60)
 	{
-		timeNow = timeNew;
-		fpstime[count++] = ImGui::GetIO().Framerate;
+		t = 0;
+		datax.clear();
+		offset = 0;
+		enable = true;
 	}
-	if (count > 60)
-	{
-		count = 0;
-		for (int i = 0; i < 60; i++)
-			fpstime[i] = 0;
-	}
-}		
+	datax.push_back({t, ImGui::GetIO().Framerate});
+	offset = (offset + 1) % (datax.size() * 60);
+}

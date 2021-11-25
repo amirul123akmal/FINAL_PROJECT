@@ -112,6 +112,7 @@
     <ClCompile Include="Vendor\imgui\imgui_tables.cpp" />
     <ClCompile Include="Vendor\imgui\imgui_widgets.cpp" />
     <ClCompile Include="Vendor\implot\epezent_implot\implot.cpp" />
+    <ClCompile Include="Vendor\implot\epezent_implot\implot_demo.cpp" />
     <ClCompile Include="Vendor\implot\epezent_implot\implot_items.cpp" />
   </ItemGroup>
   <ItemGroup>

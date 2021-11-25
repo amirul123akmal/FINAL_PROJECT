@@ -12,6 +12,7 @@
 #include "imgui/imgui.h"
 #include "implot/epezent_implot/implot.h"
 #include "implot/epezent_implot/implot_internal.h"
+#include "implot/epezent_implot/implot_internal.h"
 #include "imgui/backends/imgui_impl_opengl3.h"
 #include "imgui/backends/imgui_impl_glfw.h"
 #include <tchar.h>

@@ -57,6 +57,9 @@
     <ClCompile Include="Vendor\implot\epezent_implot\implot_items.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Vendor\implot\epezent_implot\implot_demo.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="res\Header.h">
