@@ -222,7 +222,7 @@ void json_table::FromBigStorage()
 {
 	std::ifstream storageAccess("data/Customization/Color.json", std::ios::in);
 	storageAccess >> BigStorage;
-	
+	count = 1;
 	std::string context;
 	while (1)
 	{
@@ -247,6 +247,7 @@ void json_table::FromBigStorage()
 void json_table::BigStorageUpdation(ImVec4& data, const char* name)
 {
 	for (int i = 0; i < LoadedBigStorage.size(); i++)
+	{
 		if (LoadedBigStorage[i].name == name)
 		{
 			LoadedBigStorage[i].x = data.x;
@@ -254,13 +255,31 @@ void json_table::BigStorageUpdation(ImVec4& data, const char* name)
 			LoadedBigStorage[i].z = data.z;
 			LoadedBigStorage[i].a = data.w;
 		}
+	}
 }
 void json_table::colorLoadIntoDisk()
 {
 	std::ofstream fileHandler("data/Customization/ColorTemp.json", std::ios::out);
-	
-
+	count = 1;
+	std::string datahandler;
+	nlohmann::json superhandler;
+	for (int i = 0; i < LoadedBigStorage.size(); i++)
+	{
+		datahandler = "data" + std::to_string(count++);
+		nlohmann::json inColor;
+		inColor["x"] = LoadedBigStorage[i].x;
+		inColor["y"] = LoadedBigStorage[i].y;
+		inColor["z"] = LoadedBigStorage[i].z;
+		inColor["a"] = LoadedBigStorage[i].a;
+		nlohmann::json data;
+		data["name"] = LoadedBigStorage[i].name;
+		data["color"] = inColor;
+		superhandler[datahandler.c_str()] = data;
+	}
+	fileHandler << superhandler;
 	fileHandler.close();
+	system("del data\\Customization\\Color.json");
+	system("rename data\\Customization\\ColorTemp.json Color.json");
 }
 
 json_table::json_table()

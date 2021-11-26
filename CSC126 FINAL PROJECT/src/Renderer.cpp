@@ -286,6 +286,12 @@ void render::imguiinit()
 
 render::~render()
 {
+	// save the Color before Close the window
+	BigStorageUpdation(clear, "MainWindow");
+	colorLoadIntoDisk();
+
+
+	// Ended the window
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplGlfw_Shutdown();
 	ImGui::DestroyContext();
