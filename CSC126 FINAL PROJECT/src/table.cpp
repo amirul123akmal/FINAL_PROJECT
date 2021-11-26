@@ -1,3 +1,4 @@
+#include "pch.h"
 #include "table.h"
 
 // ========== PRIVATE ==========
@@ -163,34 +164,132 @@ table::~table()
 	// Just to be ready if want to put anything
 }
 
-json_table::json_table()
-{
-	update();
-	loadtable("default.json");
-}
 
-json_table::~json_table()
+// JSON PARSER
+void json_table::loadtable()
 {
-}
-
-void json_table::loadtable(std::string a)
-{
-	json_data.clear();
-	table_data.clear();
-	std::ifstream table("data/"+a, std::ios::in);
-	j = nlohmann::json::parse(table);
-	std::string alpha;
-	for (int i = 0; i < 7; i++)
+	for (int k = 0; k < available_table.size(); k++)
 	{
+		table_transfer collect;
 		json_data.clear();
-		nlohmann::json js(j[day[i].c_str()]);
-		time_stamp_limit = js.size();
-		for (int j = 1; j <= time_stamp_limit; j++)
-			json_data.push_back(js[std::to_string(j).c_str()]);
-		table_data.push_back(json_data);
+		j.clear();
+		// read JSON
+		std::ifstream table("data/Table/"+ available_table[k] + ".json", std::ios::in);
+		j = nlohmann::json::parse(table);
+
+		collect.name = j["name"];
+
+		if (j["open"] == "true")
+			collect.isdefault = true;
+		
+		for (int i = 0; i < 7; i++)
+		{
+			json_data.clear();
+			nlohmann::json js(j[day[i].c_str()]);
+
+			if(js.size() > collect.time_stamp_limit)
+				collect.time_stamp_limit = js.size();
+
+			for (int j = 1; j <= collect.time_stamp_limit; j++)
+				json_data.push_back(js[std::to_string(j).c_str()]);
+			collect.data.push_back(json_data);
+		}
+		API.push_back(collect);
+		table.close();
 	}
 }
 
-void json_table::update()
+void json_table::availtable()
+{
+	try
+	{
+		for (const std::filesystem::directory_entry& i : std::filesystem::directory_iterator("data/Table/"))
+		{
+			temp = i.path().string();
+			temp.erase(temp.end() - 5, temp.end()); // remove extension
+			temp.erase(temp.begin(), temp.begin() + 11); // remove parent dir
+			available_table.push_back(temp);
+		}
+		spdlog::info("Loaded all table");
+	}
+	catch (std::string e)
+	{
+		spdlog::error("Failed load table");
+	}
+}
+
+void json_table::FromBigStorage()
+{
+	std::ifstream storageAccess("data/Customization/Color.json", std::ios::in);
+	storageAccess >> BigStorage;
+	count = 1;
+	std::string context;
+	while (1)
+	{
+		storage_parser data;
+		context = "data" + std::to_string(count++);
+		if (!BigStorage[context.c_str()].is_null())
+		{
+			nlohmann::json in1(BigStorage[context.c_str()]);
+			data.name = in1["name"];
+			nlohmann::json in2(in1["color"]);
+			data.x = in2["x"];
+			data.y = in2["y"];
+			data.z = in2["z"];
+			data.a = in2["a"];
+			LoadedBigStorage.push_back(data);
+		}
+		else
+			break;
+	}
+	storageAccess.close();
+}
+void json_table::BigStorageUpdation(ImVec4& data, const char* name)
+{
+	for (int i = 0; i < LoadedBigStorage.size(); i++)
+	{
+		if (LoadedBigStorage[i].name == name)
+		{
+			LoadedBigStorage[i].x = data.x;
+			LoadedBigStorage[i].y = data.y;
+			LoadedBigStorage[i].z = data.z;
+			LoadedBigStorage[i].a = data.w;
+		}
+	}
+}
+
+void json_table::colorLoadIntoDisk()
+{
+	std::ofstream fileHandler("data/Customization/ColorTemp.json", std::ios::out);
+	count = 1;
+	std::string datahandler;
+	nlohmann::json superhandler;
+	for (int i = 0; i < LoadedBigStorage.size(); i++)
+	{
+		datahandler = "data" + std::to_string(count++);
+		nlohmann::json inColor;
+		inColor["x"] = LoadedBigStorage[i].x;
+		inColor["y"] = LoadedBigStorage[i].y;
+		inColor["z"] = LoadedBigStorage[i].z;
+		inColor["a"] = LoadedBigStorage[i].a;
+		nlohmann::json data;
+		data["name"] = LoadedBigStorage[i].name;
+		data["color"] = inColor;
+		superhandler[datahandler.c_str()] = data;
+	}
+	fileHandler << superhandler;
+	fileHandler.close();
+	system("del data\\Customization\\Color.json");
+	system("rename data\\Customization\\ColorTemp.json Color.json");
+}
+
+json_table::json_table()
+{
+	availtable();
+	loadtable();
+	FromBigStorage();
+}
+
+json_table::~json_table()
 {
 }

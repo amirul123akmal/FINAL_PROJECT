@@ -1,3 +1,18 @@
-[submodule "lib/imgui"]
-	path = lib/imgui
+[submodule ".\\CSC126 FINAL PROJECT\\Vendor\\imgui"]
+	path = .\\CSC126 FINAL PROJECT\\Vendor\\imgui
 	url = https://github.com/ocornut/imgui.git
+[submodule ".\\CSC126 FINAL PROJECT\\Vendor\\json"]
+	path = .\\CSC126 FINAL PROJECT\\Vendor\\json
+	url = https://github.com/nlohmann/json.git
+[submodule "CSC126 FINAL PROJECT/Vendor/json"]
+	path = CSC126 FINAL PROJECT/Vendor/json
+	url = https://github.com/nlohmann/json.git
+[submodule "CSC126 FINAL PROJECT/Vendor/imgui"]
+	path = CSC126 FINAL PROJECT/Vendor/imgui
+	url = https://github.com/ocornut/imgui.git
+[submodule "CSC126 FINAL PROJECT/Vendor/spdlog"]
+	path = CSC126 FINAL PROJECT/Vendor/spdlog
+	url = https://github.com/gabime/spdlog.git
+[submodule "wiki"]
+	path = wiki
+	url = https://github.com/ocornut/imgui.wiki.git

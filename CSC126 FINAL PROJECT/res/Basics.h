@@ -1,35 +1,27 @@
 #pragma once
 
-// External Lib Header
-#include <boost/asio/thread_pool.hpp>
-#include <boost/asio/post.hpp>
-#include <nlohmann/json.hpp>
-
-// GUI Stuff
-#include <imgui/imgui.h>
-#include <tchar.h>
-#include "GLFW/glfw3.h"
-#include "imgui/imgui_impl_glfw.h"
-#include "imgui/imgui_impl_opengl3.h"
-
-// STL
-#include <iostream>
-#include <string>
-#include <vector>
-#include <fstream>
-#include <sstream>
-#include <filesystem>
-#include <algorithm>
-#include <mutex>
-#include <cstdio>
-#include <Windows.h>
-
-
 // Easy Usage
 // Mostly for debug
 #define CONSOLE(x) std::cout << x << std::endl
 #define CONSOLE1(x) std::cout << x
 
+/// <summary>
+/// Data Movement from JSON API to ImGui 
+/// Collect all table and is_default option in the gui
+/// </summary>
+struct table_transfer
+{
+	bool isdefault = false;
+	int time_stamp_limit = 0;
+	std::string name{};
+	std::vector<std::vector<std::string>> data;
+};
+
+struct storage_parser
+{
+	std::string name{};
+	float x, y, z, a;
+};
 namespace basic
 {
 	/// <summary>

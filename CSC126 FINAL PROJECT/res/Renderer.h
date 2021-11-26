@@ -23,23 +23,69 @@ private:
 	bool home = true;
 	bool createtable = false;
 	bool opentable = false;
+	bool debug = false;
 
-	void homepage(bool* enable);
-	void table(bool* open);
+	void menubar();
+	void debug_mode(bool* open);
+	void homepage(bool* open);
+
+	// Table stuff
 	void tablecreation(bool* open);
+	void table(bool* open);
 
+	char name[20] = "Default Table Name";
+	char namenow[20] = "Default name";
+	float spacingVertical = 0;
+	float spacingHorizontal = -1;
+	ImVec4 TableWindowColorSpace; // TbWinColSpa
+	ImVec4 TableBgColorSpace;	  // TbBgColSpa
+	ImVec4 TableLineColorSpace = { .45f, .55f, .6f, 1.0f };	 
+	ImGuiID TableBgColor_Space = 12100;
+	ImGuiID tableopenarea = 12099;
+	ImGuiID dragresizableArea = 12098;
 private:
+	// Shorting Helper Functions
+	void t_horizon(int h);
+	void t_vertical(int h);
+
+	// MENU BAR
+	bool customization = false;
+
+	void TableModeBar();
+	void customize(bool* open, ImVec4& data, const char* whichWindow);
+
+	// INITIALIZATION
 	void imguiinit();
 	int glfwinit();
+	void colorinitialization(ImVec4& Vec4ColSpace, const char*);
+	void initializecolorspace();
 	static void glfw_error_callback(int error, const char* description);
-private:
-	// Window Stuff
+
+	// WINDOW RELATED
 	const char* glsl_version = "#version 130";
 	GLFWwindow* window = NULL;
 	ImGuiIO io;
 
-	// Frame stuff
+private:
+	// DEBUGGING
+	// FRAME RELATED
 	int width = 0, height = 0;
-	ImVec4 clear = ImVec4(.45f, .55f, .6f, 1.0f);
+	ImVec4 clear;
 	ImVec2 size = ImVec2(200,200);
+
+	// FPS RELATED
+	double lasttime = 0;
+	int FPS_LIMIT = 60;
+	int FPS_HOLDER = 60;
+	bool enable = false;
+	int count = 0;
+	float t = 0;
+	int offset = 0;
+	ImVector<ImVec2> datax{};
+
+	void FPS_limit(int fps);
+	void fpsgraph();
+
+	// CONSOLE LIKE
+	ImGuiID consoling;
 };
