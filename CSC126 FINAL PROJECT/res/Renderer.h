@@ -37,9 +37,10 @@ private:
 	char namenow[20] = "Default name";
 	float spacingVertical = 0;
 	float spacingHorizontal = -1;
-	ImVec4 TableWindowColorSpace = { .45f, .6f, .7f, 1.0f };
-	ImVec4 TableBgColorSpace = {.6f, .69f, .75f, 2.0f };
-	ImVec4 TableLineColorSpace = { .45f, .55f, .6f, 1.0f };
+	ImVec4 TableWindowColorSpace; // TbWinColSpa
+	ImVec4 TableBgColorSpace;	  // TbBgColSpa
+	ImVec4 TableLineColorSpace = { .45f, .55f, .6f, 1.0f };	 
+	ImGuiID TableBgColor_Space = 12100;
 	ImGuiID tableopenarea = 12099;
 	ImGuiID dragresizableArea = 12098;
 private:
@@ -56,7 +57,8 @@ private:
 	// INITIALIZATION
 	void imguiinit();
 	int glfwinit();
-	void colorinitialization();
+	void colorinitialization(ImVec4& Vec4ColSpace, const char*);
+	void initializecolorspace();
 	static void glfw_error_callback(int error, const char* description);
 
 	// WINDOW RELATED

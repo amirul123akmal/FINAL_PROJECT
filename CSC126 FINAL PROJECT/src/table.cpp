@@ -257,6 +257,7 @@ void json_table::BigStorageUpdation(ImVec4& data, const char* name)
 		}
 	}
 }
+
 void json_table::colorLoadIntoDisk()
 {
 	std::ofstream fileHandler("data/Customization/ColorTemp.json", std::ios::out);

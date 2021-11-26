@@ -288,6 +288,8 @@ render::~render()
 {
 	// save the Color before Close the window
 	BigStorageUpdation(clear, "MainWindow");
+	BigStorageUpdation(TableWindowColorSpace, "TbWinColSpa");
+	BigStorageUpdation(TableBgColorSpace, "TbBgColSpa");
 	colorLoadIntoDisk();
 
 
@@ -300,79 +302,107 @@ render::~render()
 	glfwTerminate();
 }
 
+void render::initializecolorspace()
+{
+	colorinitialization(clear, "MainWindow");
+	colorinitialization(TableWindowColorSpace, "TbWinColSpa");
+	colorinitialization(TableBgColorSpace, "TbBgColSpa");
+}
+
 void render::glfw_error_callback(int error, const char* description)
 {
 	std::fprintf(stderr, "GLFW Error %d: %s", error, description);
 }
 
+static float spaceVerticalMax = 450;
 void render::t_horizon(int h)
 {
-	if (ImGui::BeginTable("Jadual", API[h].time_stamp_limit, ImGuiTableFlags_Borders))
+	if (ImGui::BeginChildFrame(TableBgColor_Space, {-1, spaceVerticalMax }, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse))
 	{
-		ImGui::TableNextRow();
-		ImGui::TableSetColumnIndex(0);
-		ImGui::Text("Hari");
-		int count = 8;
-		for (int column = 1; column < API[h].time_stamp_limit; column++)
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, TableBgColorSpace);
+		if(ImGui::BeginChild("##Table Frame BG", { -1, spaceVerticalMax }))
 		{
-			ImGui::TableSetColumnIndex(column);
-			ImGui::Text("%d:00", count);
-			ImGui::TableSetColumnIndex(++column);
-			ImGui::Text("%d:30", count++);
-		}
-		for (int index = 0; index < API[h].data.size(); index++)
-		{
-			ImGui::TableNextRow();
-			ImGui::TableSetColumnIndex(0);
-			ImGui::Dummy({0, spacingVertical});
-			ImGui::Text("%s", day[index].c_str());
-			ImGui::Dummy({0, spacingVertical});
-			for (int j = 0; j < API[h].data[index].size() - 1; j++)
+			if (ImGui::BeginTable("Jadual", API[h].time_stamp_limit, ImGuiTableFlags_Borders))
 			{
-				ImGui::TableSetColumnIndex(j + 1);
-				ImGui::Dummy({0, spacingVertical});
-				ImGui::Text("%s", API[h].data[index][j].c_str());
-				ImGui::Dummy({0, spacingVertical});
+				ImGui::TableNextRow();
+				ImGui::TableSetColumnIndex(0);
+				ImGui::Text("Hari");
+				int count = 8;
+				for (int column = 1; column < API[h].time_stamp_limit; column++)
+				{
+					ImGui::TableSetColumnIndex(column);
+					ImGui::Text("%d:00", count);
+					ImGui::TableSetColumnIndex(++column);
+					ImGui::Text("%d:30", count++);
+				}
+				for (int index = 0; index < API[h].data.size(); index++)
+				{
+					ImGui::TableNextRow();
+					ImGui::TableSetColumnIndex(0);
+					ImGui::Dummy({0, spacingVertical});
+					ImGui::Text("%s", day[index].c_str());
+					ImGui::Dummy({0, spacingVertical});
+					for (int j = 0; j < API[h].data[index].size() - 1; j++)
+					{
+						ImGui::TableSetColumnIndex(j + 1);
+						ImGui::Dummy({0, spacingVertical});
+						ImGui::Text("%s", API[h].data[index][j].c_str());
+						ImGui::Dummy({0, spacingVertical});
+					}
+				}
+				ImGui::EndTable();
 			}
 		}
-		ImGui::EndTable();
+		ImGui::EndChild();
+		ImGui::EndChildFrame();
+		ImGui::PopStyleColor();
 	}
 }
 
 void render::t_vertical(int h)
 {
-	if (ImGui::BeginTable("Jadual", 8, ImGuiTableFlags_Borders, {spacingHorizontal, 500}))
+	if (ImGui::BeginChildFrame(TableBgColor_Space, { -1, 500 }, ImGuiWindowFlags_NoScrollbar | ImGuiWindowFlags_NoScrollWithMouse))
 	{
-		ImGui::TableNextRow();
-		ImGui::TableSetColumnIndex(0);
-		ImGui::Dummy({spacingVertical, 0});
-		ImGui::SameLine();
-		ImGui::Text("Hari");
-		int count = 8;
-		for (int row = -1; row < API[h].time_stamp_limit; row++)
+		ImGui::PushStyleColor(ImGuiCol_ChildBg, TableBgColorSpace);
+		if (ImGui::BeginChild("##Table Frame BG", { -1, 500 }))
 		{
-			ImGui::TableSetColumnIndex(0);
-			ImGui::Dummy({spacingVertical, 0});
-			ImGui::SameLine();
-			if (row % 2 == 0)
-				ImGui::Text("%d:00", count);
-			else if (row % 2 == 1)
-				ImGui::Text("%d:30", count++);
-			for (int i = 0 ; i < 7 ; i++)
+			if (ImGui::BeginTable("Jadual", 8, ImGuiTableFlags_Borders, { spacingHorizontal, 500 }))
 			{
-				ImGui::TableNextColumn();
-				ImGui::Dummy({spacingVertical, 0});
-				ImGui::SameLine();
-				if (row == -1)
-					ImGui::Text(day[i].c_str());
-				else
-					ImGui::Text("%s", API[h].data[i][row].c_str());
-				ImGui::Dummy({spacingVertical, 0});
-			}
-			if(row != API[h].time_stamp_limit - 1)
 				ImGui::TableNextRow();
+				ImGui::TableSetColumnIndex(0);
+				ImGui::Dummy({ spacingVertical, 0 });
+				ImGui::SameLine();
+				ImGui::Text("Hari");
+				int count = 8;
+				for (int row = -1; row < API[h].time_stamp_limit; row++)
+				{
+					ImGui::TableSetColumnIndex(0);
+					ImGui::Dummy({ spacingVertical, 0 });
+					ImGui::SameLine();
+					if (row % 2 == 0)
+						ImGui::Text("%d:00", count);
+					else if (row % 2 == 1)
+						ImGui::Text("%d:30", count++);
+					for (int i = 0; i < 7; i++)
+					{
+						ImGui::TableNextColumn();
+						ImGui::Dummy({ spacingVertical, 0 });
+						ImGui::SameLine();
+						if (row == -1)
+							ImGui::Text(day[i].c_str());
+						else
+							ImGui::Text("%s", API[h].data[i][row].c_str());
+						ImGui::Dummy({ spacingVertical, 0 });
+					}
+					if (row != API[h].time_stamp_limit - 1)
+						ImGui::TableNextRow();
+				}
+				ImGui::EndTable();
+			}
+			ImGui::EndChild();
+			ImGui::EndChildFrame();
+			ImGui::PopStyleColor();
 		}
-		ImGui::EndTable();
 	}
 }
 
@@ -419,7 +449,7 @@ void render::initall()
 	int a;
 	a = glfwinit();
 	imguiinit();
-	colorinitialization();
+	initializecolorspace();
 }
 
 int render::glfwinit()
@@ -433,16 +463,19 @@ int render::glfwinit()
 	return 0;
 }
 
-void render::colorinitialization()
+
+void render::colorinitialization(ImVec4& Vec4ColSpace, const char* theName)
 {
 	for (int x = 0; x < LoadedBigStorage.size(); x++)
 	{
-		if (LoadedBigStorage[x].name == "MainWindow")
+		if (LoadedBigStorage[x].name == theName)
 		{
-			clear.x = LoadedBigStorage[x].x;
-			clear.y = LoadedBigStorage[x].y;
-			clear.z = LoadedBigStorage[x].z;
-			clear.w = LoadedBigStorage[x].a;
+			Vec4ColSpace.x = LoadedBigStorage[x].x;
+			Vec4ColSpace.y = LoadedBigStorage[x].y;
+			Vec4ColSpace.z = LoadedBigStorage[x].z;
+			Vec4ColSpace.w = LoadedBigStorage[x].a;
+			break; // Save resources
 		}
 	}
 }
+
