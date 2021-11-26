@@ -272,23 +272,6 @@ render::render()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 }
 
-void render::initall()
-{
-	int a;
-	a = glfwinit();
-	imguiinit();
-}
-
-int render::glfwinit()
-{
-	window = glfwCreateWindow(1920, 1080, "CSC126 Mini Project", NULL, NULL);
-	glfwMaximizeWindow(window);
-	if (!window)
-		return 1;
-	glfwMakeContextCurrent(window);
-	glfwSwapInterval(0);
-	return 0;
-}
 
 void render::imguiinit()
 {
@@ -423,4 +406,37 @@ void render::fpsgraph()
 	}
 	datax.push_back({t, ImGui::GetIO().Framerate});
 	offset = (offset + 1) % (datax.size() * 60);
+}
+
+void render::initall()
+{
+	int a;
+	a = glfwinit();
+	imguiinit();
+	colorinitialization();
+}
+
+int render::glfwinit()
+{
+	window = glfwCreateWindow(1920, 1080, "CSC126 Mini Project", NULL, NULL);
+	glfwMaximizeWindow(window);
+	if (!window)
+		return 1;
+	glfwMakeContextCurrent(window);
+	glfwSwapInterval(0);
+	return 0;
+}
+
+void render::colorinitialization()
+{
+	for (int x = 0; x < LoadedBigStorage.size(); x++)
+	{
+		if (LoadedBigStorage[x].name == "MainWindow")
+		{
+			clear.x = LoadedBigStorage[x].x;
+			clear.y = LoadedBigStorage[x].y;
+			clear.z = LoadedBigStorage[x].z;
+			clear.w = LoadedBigStorage[x].a;
+		}
+	}
 }

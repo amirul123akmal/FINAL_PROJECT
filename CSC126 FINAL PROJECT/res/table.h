@@ -39,11 +39,14 @@ public:
 	~json_table();
 	void loadtable();
 	void availtable();
-
 private:
 	nlohmann::json j;
+	nlohmann::json BigStorage;
 	std::vector<std::string> json_data{};
 	std::string temp;
+	int count = 1;
+
+	void FromBigStorage();
 protected:
 	/// <summary>
 	/// Days in a week
@@ -56,4 +59,9 @@ protected:
 	/// </summary>
 	std::vector<std::string> available_table{};
 	std::vector<table_transfer> API{};
+	
+	void colorLoadIntoDisk();
+	void BigStorageUpdation(ImVec4& data, const char*);
+
+	std::vector<storage_parser> LoadedBigStorage{};
 };

@@ -173,9 +173,7 @@
     <ClInclude Include="Vendor\implot\epezent_implot\implot_internal.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="data\Customization\CreateTable.json" />
-    <None Include="data\Customization\mainWindow.json" />
-    <None Include="data\Customization\OpenTable.json" />
+    <None Include="data\Customization\Color.json" />
     <None Include="data\Table\default.json" />
     <None Include="res\Warning.h" />
     <None Include="src\glfw3.dll" />

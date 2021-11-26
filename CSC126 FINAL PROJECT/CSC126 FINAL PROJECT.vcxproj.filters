@@ -71,9 +71,6 @@
     <ClInclude Include="res\Basics.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="res\table.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="res\Renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -116,13 +113,14 @@
     <ClInclude Include="res\pch.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="res\table.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="res\Warning.h" />
     <None Include="src\glfw3.dll" />
     <None Include="data\Table\default.json" />
-    <None Include="data\Customization\mainWindow.json" />
-    <None Include="data\Customization\OpenTable.json" />
-    <None Include="data\Customization\CreateTable.json" />
+    <None Include="data\Customization\Color.json" />
   </ItemGroup>
 </Project>

@@ -165,6 +165,7 @@ table::~table()
 }
 
 
+// JSON PARSER
 void json_table::loadtable()
 {
 	for (int k = 0; k < available_table.size(); k++)
@@ -217,10 +218,56 @@ void json_table::availtable()
 	}
 }
 
+void json_table::FromBigStorage()
+{
+	std::ifstream storageAccess("data/Customization/Color.json", std::ios::in);
+	storageAccess >> BigStorage;
+	
+	std::string context;
+	while (1)
+	{
+		storage_parser data;
+		context = "data" + std::to_string(count++);
+		if (!BigStorage[context.c_str()].is_null())
+		{
+			nlohmann::json in1(BigStorage[context.c_str()]);
+			data.name = in1["name"];
+			nlohmann::json in2(in1["color"]);
+			data.x = in2["x"];
+			data.y = in2["y"];
+			data.z = in2["z"];
+			data.a = in2["a"];
+			LoadedBigStorage.push_back(data);
+		}
+		else
+			break;
+	}
+	storageAccess.close();
+}
+void json_table::BigStorageUpdation(ImVec4& data, const char* name)
+{
+	for (int i = 0; i < LoadedBigStorage.size(); i++)
+		if (LoadedBigStorage[i].name == name)
+		{
+			LoadedBigStorage[i].x = data.x;
+			LoadedBigStorage[i].y = data.y;
+			LoadedBigStorage[i].z = data.z;
+			LoadedBigStorage[i].a = data.w;
+		}
+}
+void json_table::colorLoadIntoDisk()
+{
+	std::ofstream fileHandler("data/Customization/ColorTemp.json", std::ios::out);
+	
+
+	fileHandler.close();
+}
+
 json_table::json_table()
 {
 	availtable();
 	loadtable();
+	FromBigStorage();
 }
 
 json_table::~json_table()

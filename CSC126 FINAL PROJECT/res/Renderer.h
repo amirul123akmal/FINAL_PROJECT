@@ -56,6 +56,7 @@ private:
 	// INITIALIZATION
 	void imguiinit();
 	int glfwinit();
+	void colorinitialization();
 	static void glfw_error_callback(int error, const char* description);
 
 	// WINDOW RELATED
@@ -67,7 +68,7 @@ private:
 	// DEBUGGING
 	// FRAME RELATED
 	int width = 0, height = 0;
-	ImVec4 clear = ImVec4(.45f, .55f, .6f, 1.0f);
+	ImVec4 clear;
 	ImVec2 size = ImVec2(200,200);
 
 	// FPS RELATED

@@ -17,6 +17,11 @@ struct table_transfer
 	std::vector<std::vector<std::string>> data;
 };
 
+struct storage_parser
+{
+	std::string name{};
+	float x, y, z, a;
+};
 namespace basic
 {
 	/// <summary>
