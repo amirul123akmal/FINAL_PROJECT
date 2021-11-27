@@ -5,15 +5,20 @@
 int render::runMainProcess()
 {
 	lasttime = glfwGetTime();
+	trackerinit();
 	while (!glfwWindowShouldClose(window) && !exit)
 	{
 		// Set New Frame
 		glfwPollEvents();
 		new_frame();
 
-		// Frame body
+		// Function for mainWindow
 		menubar();
+		captureMouseClickSafety();
+		ConsoleUpdate();
 		fpsgraph();
+		
+		// Frame body
 		if (debug) debug_mode(&debug);
 		if (home) homepage(&home);
 		if (createtable) { tablecreation(&createtable); }
@@ -48,20 +53,30 @@ void render::debug_mode(bool* open)
 		ImGui::SliderInt("FPS", &FPS_LIMIT, 15, 500, "%d");
 		ImGui::SameLine();
 		if (ImGui::Button("Reset FPS to Default"))
+		{
 			FPS_LIMIT = 60;
-		ImGui::InputInt("##Set FPS", &FPS_LIMIT, 5, 50, ImGuiInputTextFlags_EnterReturnsTrue);
+			ConsoleText.push_back("FPS Reset");
+		}
+		if (ImGui::InputInt("##Set FPS", &FPS_LIMIT, 5, 50, ImGuiInputTextFlags_EnterReturnsTrue))
+			ConsoleText.push_back("FPS was Updated to " + std::to_string(FPS_LIMIT));
 		ImGui::SameLine();
 		ImGui::Text(" <-- Set Specific FPS");
 		ImPlot::SetNextPlotLimitsX(0, 60);
 		ImPlot::SetNextPlotLimitsY(0, 500);
-		if (ImPlot::BeginPlot("##FPS Graph", "Time", "FPS", {-1, 200}, ImPlotFlags_Crosshairs || ImPlotFlags_CanvasOnly))
+		if (ImPlot::BeginPlot("##FPS Graph", "Time", "FPS", {-1, 200}, ImPlotFlags_Crosshairs | ImPlotFlags_CanvasOnly))
 		{
 			ImPlot::PlotShaded("##FPS INLINE SHADED", &datax[0].x, &datax[0].y, datax.size(),-INFINITY, 0, 2 * sizeof(float));
 			ImPlot::PlotLine("###FPS INLINE GRAPH", &datax[0].x, &datax[0].y, datax.size(), 0, 2*sizeof(float));
 			ImPlot::EndPlot();
 		}
-		char tempo[] = "Amazing";
-		ImGui::InputTextMultiline("##Logging Console", tempo,2* sizeof(tempo), { -1, 0 }, ImGuiInputTextFlags_ReadOnly || ImGuiInputTextFlags_NoMarkEdited);
+		if (ImGui::BeginChildFrame(DebuggingFrame1, { -1, 200 }, ImGuiWindowFlags_NoScrollbar))
+		{
+			if (ImGui::BeginChild("###Debugging Console", { -1, 200 }, false, ImGuiWindowFlags_AlwaysAutoResize | ImGuiWindowFlags_AlwaysVerticalScrollbar))
+				for (int i = 0; i < ConsoleText.size(); i++)
+					ImGui::Text("%s", ConsoleText[i].c_str());
+			ImGui::EndChild();
+			ImGui::EndChildFrame();
+		}
 	}
 }
 
@@ -272,12 +287,13 @@ render::render()
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
 }
 
-
 void render::imguiinit()
 {
 	ImGui::CreateContext();
 	ImPlot::CreateContext();
 	io = ImGui::GetIO(); (void)io;
+	io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
+	io.BackendFlags |= ImGuiBackendFlags_HasMouseCursors;
 	ImGui::StyleColorsDark();
 
 	ImGui_ImplGlfw_InitForOpenGL(window, true);
@@ -463,7 +479,6 @@ int render::glfwinit()
 	return 0;
 }
 
-
 void render::colorinitialization(ImVec4& Vec4ColSpace, const char* theName)
 {
 	for (int x = 0; x < LoadedBigStorage.size(); x++)
@@ -478,4 +493,39 @@ void render::colorinitialization(ImVec4& Vec4ColSpace, const char* theName)
 		}
 	}
 }
+
+void render::captureMouseClickSafety()
+{
+	if (ConsoleText.size() > 50)
+		ConsoleText.erase(ConsoleText.begin());
+}
+
+void render::trackerinit()
+{
+	tracker.push_back(true); // home
+	tracker.push_back(true); // debug
+	tracker.push_back(true); // createtable
+	tracker.push_back(true); // opentable
+	tracker.push_back(true); // colorWindowWasOpen
+}
+
+void render::ConsoleUpdate()
+{
+	if (home) { if (tracker[0] == true) { ConsoleText.push_back("Homepage Window is on"); tracker[0] = false; } }
+	else { if (tracker[0] == false) { ConsoleText.push_back("Homepage Window is off"); tracker[0] = true; } }
+
+	if (debug) { if (tracker[1] == true) { ConsoleText.push_back("debug Window is on"); tracker[1] = false; } }
+	else { if (tracker[1] == false) { ConsoleText.push_back("debug Window is off"); tracker[1] = true; } }
+
+	if (createtable) { if (tracker[2] == true) { ConsoleText.push_back("createtable Window is on"); tracker[2] = false; } }
+	else { if (tracker[2] == false) { ConsoleText.push_back("createtable Window is off"); tracker[2] = true; } }
+
+	if (opentable) { if (tracker[3] == true) { ConsoleText.push_back("opentable Window is on"); tracker[3] = false; } }
+	else { if (tracker[3] == false) { ConsoleText.push_back("opentable Window is off"); tracker[3] = true; } }
+
+	if (customization || tablewindowbg || tablebg || tableline) { if (tracker[4] == true) { ConsoleText.push_back("customization Window is on"); tracker[4] = false; } }
+	else { if (tracker[4] == false) { ConsoleText.push_back("customization Window is off"); tracker[4] = true; } }
+
+}
+
 

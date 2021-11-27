@@ -1,9 +1,13 @@
 #include "pch.h"
 #include "Warning.h"
-#include "Header.h"
+#include "pch.h"
+#include "Basics.h"
+#include "Renderer.h"
 
 int main()
 {
-	running run;
-	run::run();
+	render desktop;
+	desktop.initall();
+	desktop.runMainProcess();
+	return 0;
 }

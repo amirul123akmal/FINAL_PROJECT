@@ -44,6 +44,9 @@ private:
 	ImGuiID tableopenarea = 12099;
 	ImGuiID dragresizableArea = 12098;
 private:
+	// DOCKING
+	ImGuiID dockingID = 123456789;
+
 	// Shorting Helper Functions
 	void t_horizon(int h);
 	void t_vertical(int h);
@@ -57,9 +60,12 @@ private:
 	// INITIALIZATION
 	void imguiinit();
 	int glfwinit();
+	static void glfw_error_callback(int error, const char* description);
+
+	// COLOR
 	void colorinitialization(ImVec4& Vec4ColSpace, const char*);
 	void initializecolorspace();
-	static void glfw_error_callback(int error, const char* description);
+	bool colorWindowWasOpen = false;
 
 	// WINDOW RELATED
 	const char* glsl_version = "#version 130";
@@ -67,7 +73,9 @@ private:
 	ImGuiIO io;
 
 private:
-	// DEBUGGING
+	// ===================
+	///DEBUGGING
+	// ===================
 	// FRAME RELATED
 	int width = 0, height = 0;
 	ImVec4 clear;
@@ -76,7 +84,6 @@ private:
 	// FPS RELATED
 	double lasttime = 0;
 	int FPS_LIMIT = 60;
-	int FPS_HOLDER = 60;
 	bool enable = false;
 	int count = 0;
 	float t = 0;
@@ -87,5 +94,11 @@ private:
 	void fpsgraph();
 
 	// CONSOLE LIKE
-	ImGuiID consoling;
+	ImGuiID DebuggingFrame1 = 123;
+	std::vector < std::string > ConsoleText{};
+	std::vector<bool> tracker{};
+	void trackerinit();
+	void captureMouseClickSafety();
+	void ConsoleUpdate();
+
 };
