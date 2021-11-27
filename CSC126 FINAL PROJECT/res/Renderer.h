@@ -95,7 +95,7 @@ private:
 
 	// CONSOLE LIKE
 	ImGuiID DebuggingFrame1 = 123;
-	std::vector < std::string > ConsoleText{};
+	std::vector < std::string > ConsoleText{"Color setting Loaded", "Table saved loaded"};
 	std::vector<bool> tracker{};
 	void trackerinit();
 	void captureMouseClickSafety();
