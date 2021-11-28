@@ -10,13 +10,15 @@ int render::runMainProcess()
 	{
 		// Set New Frame
 		glfwPollEvents();
-		new_frame();
+		ImGui_ImplOpenGL3_NewFrame();
+		ImGui_ImplGlfw_NewFrame();
+		ImGui::NewFrame();
 
 		// Function for mainWindow
 		menubar();
 		captureMouseClickSafety();
 		ConsoleUpdate();
-		fpsgraph();
+		graph();
 		
 		// Frame body
 		if (debug) debug_mode(&debug);
@@ -25,6 +27,7 @@ int render::runMainProcess()
 		if (opentable) { table(&opentable); }
 		if (customization) { customize(&customization, clear, "Main Window"); }
 
+
 		FPS_limit(FPS_LIMIT);
 		// Render Frame
 		ImGui::Render();
@@ -32,7 +35,7 @@ int render::runMainProcess()
 		glViewport(0, 0, width, height); // dynamix sizing
 		glClearColor(clear.x * clear.w, clear.y * clear.w, clear.z * clear.w, clear.w);
 		glClear(GL_COLOR_BUFFER_BIT);
-		::imggl_render(ImGui::GetDrawData());
+		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 		glfwSwapBuffers(window);
 	}
 	return 0;
@@ -61,13 +64,21 @@ void render::debug_mode(bool* open)
 			ConsoleText.push_back("FPS was Updated to " + std::to_string(FPS_LIMIT));
 		ImGui::SameLine();
 		ImGui::Text(" <-- Set Specific FPS");
-		ImPlot::SetNextPlotLimitsX(0, 60);
-		ImPlot::SetNextPlotLimitsY(0, 500);
-		if (ImPlot::BeginPlot("##FPS Graph", "Time", "FPS", {-1, 200}, ImPlotFlags_Crosshairs | ImPlotFlags_CanvasOnly))
+		if (ImGui::BeginChildFrame(graphID, {-1, 200}, ImGuiWindowFlags_NoScrollbar))
 		{
-			ImPlot::PlotShaded("##FPS INLINE SHADED", &datax[0].x, &datax[0].y, datax.size(),-INFINITY, 0, 2 * sizeof(float));
-			ImPlot::PlotLine("###FPS INLINE GRAPH", &datax[0].x, &datax[0].y, datax.size(), 0, 2*sizeof(float));
-			ImPlot::EndPlot();
+			if (ImGui::BeginChild("###FPS Section", { -1, 200 }, 0, ImGuiWindowFlags_NoScrollbar))
+			{
+				ImPlot::SetNextPlotLimitsX(0, 60);
+				ImPlot::SetNextPlotLimitsY(0, 500);
+				if (ImPlot::BeginPlot("##FPS Graph", "Time ( Seconds )", "FPS", {-1, 200}, ImPlotFlags_Crosshairs | ImPlotFlags_CanvasOnly))
+				{
+					ImPlot::PlotShaded("##FPS INLINE SHADED", &datax[0].x, &datax[0].y, datax.size(),-INFINITY, 0, 2 * sizeof(float));
+					ImPlot::PlotLine("###FPS INLINE GRAPH", &datax[0].x, &datax[0].y, datax.size(), 0, 2*sizeof(float));
+				}
+				ImPlot::EndPlot();
+			}
+			ImGui::EndChild();
+			ImGui::EndChildFrame();
 		}
 		if (ImGui::BeginChildFrame(DebuggingFrame1, { -1, 200 }, ImGuiWindowFlags_NoScrollbar))
 		{
@@ -77,6 +88,7 @@ void render::debug_mode(bool* open)
 			ImGui::EndChild();
 			ImGui::EndChildFrame();
 		}
+		ImGui::End();
 	}
 }
 
@@ -101,6 +113,7 @@ void render::homepage(bool* open)
 		if (ImGui::Button("Exit"))
 			exit = true;
 	}
+	ImGui::End();
 }
 
 // Menubar
@@ -285,6 +298,7 @@ render::render()
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 0);
+	//glfwWindowHint(GLFW_DECORATED, false);
 }
 
 void render::imguiinit()
@@ -307,7 +321,6 @@ render::~render()
 	BigStorageUpdation(TableWindowColorSpace, "TbWinColSpa");
 	BigStorageUpdation(TableBgColorSpace, "TbBgColSpa");
 	colorLoadIntoDisk();
-
 
 	// Ended the window
 	ImGui_ImplOpenGL3_Shutdown();
@@ -370,8 +383,8 @@ void render::t_horizon(int h)
 			}
 		}
 		ImGui::EndChild();
-		ImGui::EndChildFrame();
 		ImGui::PopStyleColor();
+		ImGui::EndChildFrame();
 	}
 }
 
@@ -416,9 +429,9 @@ void render::t_vertical(int h)
 				ImGui::EndTable();
 			}
 			ImGui::EndChild();
-			ImGui::EndChildFrame();
-			ImGui::PopStyleColor();
 		}
+		ImGui::PopStyleColor();
+		ImGui::EndChildFrame();
 	}
 }
 
@@ -441,14 +454,16 @@ void render::customize(bool* open, ImVec4& data, const char* whichWindow)
 	{
 		ImGui::Text("%s", whichWindow);
 		ImGui::ColorPicker3("##Color Picker", &data.x);
-		ImGui::End();
 	}
+	ImGui::End();
 	ImGui::Dummy({0, 20});
 }
 
-void render::fpsgraph()
+void render::graph()
 {
-	t += ImGui::GetIO().DeltaTime;
+	h = ImGui::GetIO().DeltaTime;
+	t += h;
+	t_c += h;
 	if (t > 60)
 	{
 		t = 0;
@@ -456,7 +471,16 @@ void render::fpsgraph()
 		offset = 0;
 		enable = true;
 	}
-	datax.push_back({t, ImGui::GetIO().Framerate});
+	if (t > 1)
+	{
+		if (t_c > .05)
+		{
+			t_c = 0;
+			datax.push_back({ t, ImGui::GetIO().Framerate });
+		}
+	}
+	else
+		datax.push_back({t, ImGui::GetIO().Framerate});
 	offset = (offset + 1) % (datax.size() * 60);
 }
 

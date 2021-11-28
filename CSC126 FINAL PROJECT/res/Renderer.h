@@ -86,12 +86,18 @@ private:
 	int FPS_LIMIT = 60;
 	bool enable = false;
 	int count = 0;
-	float t = 0;
-	int offset = 0;
-	ImVector<ImVec2> datax{};
 
 	void FPS_limit(int fps);
-	void fpsgraph();
+	
+	// GRAPH
+	ImGuiID graphID = 1234567;
+	ImVector<ImVec2> datax{};
+	int offset = 0;
+	float t = 0;
+	float t_c = 0;
+	float h = 0;
+	
+	void graph();
 
 	// CONSOLE LIKE
 	ImGuiID DebuggingFrame1 = 123;

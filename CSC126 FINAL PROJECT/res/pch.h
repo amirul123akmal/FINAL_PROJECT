@@ -25,6 +25,7 @@
 #include <sstream>
 #include <filesystem>
 #include <mutex>
+#include <Windows.h>
 #include <chrono>
 
 // Headers

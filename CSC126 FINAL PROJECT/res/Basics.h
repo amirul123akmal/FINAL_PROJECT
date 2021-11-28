@@ -1,5 +1,6 @@
 #pragma once
 
+
 // Easy Usage
 // Mostly for debug
 #define CONSOLE(x) std::cout << x << std::endl
@@ -43,6 +44,9 @@ namespace basic
 	/// <param name="color"> - Color</param>
 	/// https://ss64.com/nt/syntax-ansi.html
 	void print_color(const std::string& text, bool nextline, int mode, int color);
+
+	float GetCPULoad();
+	
 
 #if _DEBUG
 	/// <summary>

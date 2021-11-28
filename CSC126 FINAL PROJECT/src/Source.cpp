@@ -9,5 +9,6 @@ int main()
 	render desktop;
 	desktop.initall();
 	desktop.runMainProcess();
+	
 	return 0;
 }
